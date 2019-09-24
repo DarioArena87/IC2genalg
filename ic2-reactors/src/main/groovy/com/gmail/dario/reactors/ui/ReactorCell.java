@@ -1,6 +1,6 @@
 package com.gmail.dario.reactors.ui;
 
-import org.apache.commons.lang3.StringUtils;
+import static com.gmail.dario.reactors.ui.ReactorComponentMapper.EMPTY_CELL;
 
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.html.Div;
@@ -15,7 +15,12 @@ public class ReactorCell extends Composite<Div> {
     public ReactorCell(final int componentId) {
         this.componentId = componentId;
         ReactorComponentMapper mappedComponent = ReactorComponentMapper.getAt(componentId);
-        image = new Image("/images/" + mappedComponent.getImage(), mappedComponent.getDescription());
+        if (mappedComponent == EMPTY_CELL) {
+            image = new Image();
+        }
+        else {
+            image = new Image("/images/" + mappedComponent.getImage(), mappedComponent.getDescription());
+        }
         image.setWidth("32px");
         image.setHeight("32px");
         getContent().add(image);

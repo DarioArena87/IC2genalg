@@ -27,6 +27,6 @@ class DimensionsChooser extends Composite<HorizontalLayout> {
             addValueChangeListener{e -> columns = e.value.intValue()}
         }
         
-        content.add(new Button("Build"))
+        content.add(new Button("Create New"))
     }
 }

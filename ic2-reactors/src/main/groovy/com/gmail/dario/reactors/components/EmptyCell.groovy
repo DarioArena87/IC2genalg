@@ -8,5 +8,5 @@ class EmptyCell extends ReactorComponent {
     void tick() { /*Does nothing */}
 
     @Override
-    public BigDecimal getDurabilityLeft() { 1 /* never destroys */}
+    BigDecimal getDurabilityLeft() { 1 /* never destroys */}
 }

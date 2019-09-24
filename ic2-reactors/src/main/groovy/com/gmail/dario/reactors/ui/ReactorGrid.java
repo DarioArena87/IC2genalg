@@ -9,8 +9,14 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 public class ReactorGrid extends Composite<VerticalLayout> {
 
     private static final long serialVersionUID = -4533578265973189967L;
+    private Reactor reactor;
 
     public ReactorGrid(final Reactor reactor) {
+        this.reactor = reactor;
+        updateGrid(reactor);
+    }
+
+    private void updateGrid(final Reactor reactor) {
         for (int i = 0; i < reactor.getRows(); i++) {
             final HorizontalLayout row = new HorizontalLayout();
             for (int j = 0; j < reactor.getColumns(); j++) {
@@ -19,7 +25,11 @@ public class ReactorGrid extends Composite<VerticalLayout> {
                 row.add(new ReactorCell(componentId));
             }
             getContent().add(row);
-
         }
+    }
+    
+    public void update() {
+        getContent().removeAll();
+        updateGrid(reactor);
     }
 }
