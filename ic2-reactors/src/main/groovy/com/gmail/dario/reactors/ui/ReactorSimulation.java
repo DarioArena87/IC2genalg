@@ -1,5 +1,6 @@
 package com.gmail.dario.reactors.ui;
 
+import com.gmail.dario.reactors.nulcearreactor.Reactor;
 import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
@@ -16,7 +17,9 @@ public class ReactorSimulation extends HorizontalLayout {
 
     VerticalLayout reactorSimulatorLayout = new VerticalLayout();
 
-    Div reactorGrid = new Div();
+    Reactor reactor;
+    
+    ReactorGrid reactorGrid;
 
     ReactorCommands reactorCommands = new ReactorCommands();
 
@@ -24,7 +27,10 @@ public class ReactorSimulation extends HorizontalLayout {
 
         add(new Div(new H2("Reactor components"), components));
         
-        Div reactorLayout = new Div(reactorGrid, reactorCommands);
+        reactor = new Reactor(dimensionsChooser.getRows(), dimensionsChooser.getColumns());
+        reactorGrid = new ReactorGrid(reactor);
+        
+        HorizontalLayout reactorLayout = new HorizontalLayout(reactorGrid, reactorCommands);
         reactorSimulatorLayout.add(dimensionsChooser, reactorLayout);
         add(reactorSimulatorLayout);
 

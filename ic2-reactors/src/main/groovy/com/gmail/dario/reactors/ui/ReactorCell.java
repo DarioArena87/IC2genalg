@@ -12,11 +12,12 @@ public class ReactorCell extends Composite<Div> {
     int componentId;
     Image image;
 
-    public ReactorCell(final int componentId, final String componentImage) {
-        image = new Image("/images/" + componentImage, StringUtils.EMPTY);
+    public ReactorCell(final int componentId) {
+        this.componentId = componentId;
+        ReactorComponentMapper mappedComponent = ReactorComponentMapper.getAt(componentId);
+        image = new Image("/images/" + mappedComponent.getImage(), mappedComponent.getDescription());
         image.setWidth("32px");
         image.setHeight("32px");
         getContent().add(image);
-        this.componentId = componentId;
     }
 }

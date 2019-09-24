@@ -2,6 +2,7 @@ package com.gmail.dario.reactors.ui
 
 import com.vaadin.flow.component.Composite
 import com.vaadin.flow.component.Text
+import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.textfield.NumberField
 
@@ -25,5 +26,7 @@ class DimensionsChooser extends Composite<HorizontalLayout> {
         content.add new NumberField(hasControls: true, step: 1.0, value: columns).tap {
             addValueChangeListener{e -> columns = e.value.intValue()}
         }
+        
+        content.add(new Button("Build"))
     }
 }
