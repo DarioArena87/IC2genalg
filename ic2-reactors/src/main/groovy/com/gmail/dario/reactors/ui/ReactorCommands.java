@@ -21,7 +21,19 @@ public class ReactorCommands extends Composite<VerticalLayout> {
         }
     }
 
-    final Button simulate = new Button("Simulate");
+    private class StartSimulationEvent extends ComponentEvent<ReactorCommands> {
+        int ticks = 6000;
+
+        public StartSimulationEvent(ReactorCommands source, boolean fromClient) {
+            super(source, fromClient);
+        }
+
+        public int getTicks() {
+            return ticks;
+        }
+    }
+
+    final Button simulate = new Button("Simulate", e-> fireEvent(new StartSimulationEvent(this, false)));
 
     final Button evolve = new Button("Evolve");
 
@@ -32,4 +44,9 @@ public class ReactorCommands extends Composite<VerticalLayout> {
     public Registration setOnRandomize(final ComponentEventListener<RandomizeEvent> e) {
         return addListener(RandomizeEvent.class, e);
     }
+
+    public Registration setOnSimulate(final ComponentEventListener<StartSimulationEvent> e) {
+        return addListener(StartSimulationEvent.class, e);
+    }
+
 }

@@ -1,7 +1,7 @@
-package com.gmail.dario.reactors.ui;
+package com.gmail.dario.reactors.ui
 
 import com.gmail.dario.reactors.components.EmptyCell
-import com.gmail.dario.reactors.components.ReactorComponent;
+import com.gmail.dario.reactors.components.ReactorComponent
 import com.gmail.dario.reactors.components.coolantcells.CoolantCell10K
 import com.gmail.dario.reactors.components.coolantcells.CoolantCell30K
 import com.gmail.dario.reactors.components.coolantcells.CoolantCell60K

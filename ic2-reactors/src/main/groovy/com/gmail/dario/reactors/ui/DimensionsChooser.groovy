@@ -14,18 +14,18 @@ class DimensionsChooser extends Composite<HorizontalLayout> {
     private static final long serialVersionUID = -6602165337690949443L
     int rows = 6
     int columns = 9
-    
+
     DimensionsChooser() {
-        content.add (
-            new Text("Size"),
-            new NumberField(hasControls: true, step: 1.0, value: rows).tap { addValueChangeListener{rows = it.value}},
-            new Text("x"),
-            new NumberField(hasControls: true, step: 1.0, value: columns).tap { addValueChangeListener{columns = it.value} },
-            new Button("Create New", { fireEvent(new DimensionChangeEvent(this, false, rows, columns)) })
+        content.add(
+                new Text("Size"),
+                new NumberField(hasControls: true, step: 1.0, value: rows).tap { addValueChangeListener { rows = it.value } },
+                new Text("x"),
+                new NumberField(hasControls: true, step: 1.0, value: columns).tap { addValueChangeListener { columns = it.value } },
+                new Button("Create New", { fireEvent(new DimensionChangeEvent(this, false, rows, columns)) })
         )
     }
-    
+
     Registration setOnDimensionChange(ComponentEventListener<DimensionChangeEvent> e) {
-        addListener(DimensionChangeEvent, e);
+        addListener(DimensionChangeEvent, e)
     }
 }

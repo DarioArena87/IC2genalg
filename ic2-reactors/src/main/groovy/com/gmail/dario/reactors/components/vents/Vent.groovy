@@ -5,15 +5,16 @@ import com.gmail.dario.reactors.components.ReactorComponent
 
 import groovy.transform.CompileStatic
 
+@CompileStatic
 abstract class Vent extends HeatingObject {
-    
+
     final BigDecimal maxHeat = 1000
-    
+
     void dissipateHeatFromReactor(BigDecimal heat) {
         this.heat += vessel.removeHeat(heat)
     }
-    
+
     void dissipateHeatToAir(BigDecimal heat) {
-        this.heat -=heat
+        this.heat -= heat
     }
 }

@@ -17,6 +17,8 @@ abstract class Reflector extends ReactorComponent {
     @Override
     void tick() {
         List<UraniumCell> connectedCells = connectedComponents.findAll { it in UraniumCell } as List<UraniumCell>
-        numberOfPulses += connectedCells*.numberOfRods.sum()
+        if (connectedCells) {
+            numberOfPulses += connectedCells*.numberOfRods.sum()
+        }
     }
 }

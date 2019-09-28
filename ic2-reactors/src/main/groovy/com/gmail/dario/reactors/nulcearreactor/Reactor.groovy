@@ -54,8 +54,8 @@ class Reactor implements TickListener {
         }
         
         if (explodedComponent) {
-            disconnectComponents();
-            connectComponents();
+            disconnectComponents()
+            connectComponents()
         }
     }
 
@@ -66,6 +66,7 @@ class Reactor implements TickListener {
             }
         }
     }
+
     void connectComponents() {
         for (int i = 0; i < rows - 1; i++) {
             for (int j = 0; j < columns - 1; j++) {

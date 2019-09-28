@@ -1,5 +1,8 @@
 package com.gmail.dario.reactors.utils
 
+import groovy.transform.CompileStatic
+
+@CompileStatic
 class Bounder {
 
 	final BigDecimal number

@@ -1,7 +1,10 @@
 package com.gmail.dario.reactors.components
 
+import groovy.transform.CompileStatic
+
 import static com.gmail.dario.reactors.utils.Bounder.bound
 
+@CompileStatic
 abstract class HeatingObject extends ReactorComponent {
     
     BigDecimal heat = 0

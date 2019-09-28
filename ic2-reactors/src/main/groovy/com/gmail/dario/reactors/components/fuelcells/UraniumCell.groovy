@@ -2,7 +2,11 @@ package com.gmail.dario.reactors.components.fuelcells
 
 import com.gmail.dario.reactors.components.ReactorComponent
 import com.gmail.dario.reactors.components.reflectors.Reflector
+import groovy.transform.CompileStatic
 
+import static com.gmail.dario.reactors.utils.FastMath.sum
+
+@CompileStatic
 abstract class UraniumCell extends ReactorComponent {
 
     BigDecimal pulsesLeft
@@ -31,7 +35,7 @@ abstract class UraniumCell extends ReactorComponent {
 
     BigDecimal getConnectedRods() {
         List<UraniumCell> connectedCells = connectedComponents.findAll { it in UraniumCell } as List<UraniumCell>
-        connectedCells*.numberOfRods.sum() ?: 0
+        sum(connectedCells*.numberOfRods)
     }
 
     BigDecimal getConnectedReflectors() {

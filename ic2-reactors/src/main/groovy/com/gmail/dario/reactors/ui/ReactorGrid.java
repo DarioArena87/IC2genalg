@@ -2,6 +2,7 @@ package com.gmail.dario.reactors.ui;
 
 import static java.util.stream.Collectors.toList;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Random;
 
@@ -50,8 +51,26 @@ public class ReactorGrid extends Composite<VerticalLayout> {
                 reactor.install(randomComponents.get(k++), i, j);
             }
         }
-        
+
+        reactor.connectComponents();
+
         update();
         
+    }
+
+    public void simulate(int ticks) {
+        for (int i = 0; i < ticks; i++) {
+            reactor.tick();
+        }
+
+        update();
+    }
+
+    public BigDecimal getEuGenerated() {
+        return reactor.getEu();
+    }
+
+    public BigDecimal getHeat() {
+        return reactor.getHeat();
     }
 }
