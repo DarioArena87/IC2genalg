@@ -41,13 +41,31 @@ class Reactor implements TickListener {
 
     @Override
     void tick() {
+        boolean explodedComponent = false
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                components[i][j].tick()
+                ReactorComponent component = components[i][j]
+                component.tick()
+                if (component.durabilityLeft == 0) {
+                    components[i][j] = EMPTY_CELL
+                    explodedComponent = true
+                }
             }
+        }
+        
+        if (explodedComponent) {
+            disconnectComponents();
+            connectComponents();
         }
     }
 
+    void disconnectComponents() {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                components[i][j].connectedComponents.clear()
+            }
+        }
+    }
     void connectComponents() {
         for (int i = 0; i < rows - 1; i++) {
             for (int j = 0; j < columns - 1; j++) {
