@@ -1,9 +1,7 @@
 package com.gmail.dario.reactors.ui
 
-import com.gmail.dario.reactors.ui.ReactorComponentMapper.*
 import com.vaadin.flow.component.accordion.Accordion
 import com.vaadin.flow.component.accordion.AccordionPanel
-
 import groovy.transform.CompileStatic
 
 import static com.gmail.dario.reactors.ui.ReactorComponentMapper.*
