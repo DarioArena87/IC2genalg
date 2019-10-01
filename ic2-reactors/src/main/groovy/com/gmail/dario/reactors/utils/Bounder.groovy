@@ -5,25 +5,25 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class Bounder {
 
-	final BigDecimal number
+	final int number
 	
-	private Bounder(BigDecimal number) {
+	private Bounder(int number) {
 		this.number = number
 	}
 	
-	static Bounder bound(BigDecimal number) {
+	static Bounder bound(int number) {
 		new Bounder(number)
 	}
 
-    BigDecimal toAtMost(BigDecimal upperLimit) {
-		[number, upperLimit].min()
+    int toAtMost(int upperLimit) {
+		Math.min(number, upperLimit)
 	}
 
-    BigDecimal toAtLeast(BigDecimal lowerLimit) {
-        [lowerLimit, number].max()
+    int toAtLeast(int lowerLimit) {
+        Math.max(lowerLimit, number)
     }
 
-    BigDecimal inRange(BigDecimal lower, BigDecimal higher) {
+    int inRange(int lower, int higher) {
         assert lower < higher : "Invalid range (lower >= higher)"
         
         switch (number){

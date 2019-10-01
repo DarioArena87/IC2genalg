@@ -9,36 +9,41 @@ import static com.gmail.dario.reactors.utils.FastMath.sum
 @CompileStatic
 abstract class UraniumCell extends ReactorComponent {
 
-    BigDecimal pulsesLeft
+    double pulsesLeft
 
-    final BigDecimal maxPulses
+    final double maxPulses
 
-    BigDecimal getDurabilityLeft() { pulsesLeft / maxPulses }
+    double getDurabilityLeft() { pulsesLeft / maxPulses }
 
-    abstract BigDecimal getNumberOfRods()
+    abstract int getNumberOfRods()
 
     abstract BigDecimal getEuGenerated()
 
-    UraniumCell(BigDecimal pulses) {
+    UraniumCell(double pulses) {
         this.pulsesLeft = pulses
         this.maxPulses = pulses
     }
 
     @Override
     void tick() {
-        BigDecimal efficiency = 1 + connectedRods + connectedReflectors
+        int efficiency = 1 + connectedRods + connectedReflectors
         vessel.eu += euGenerated * efficiency
         vessel.putHeat(efficiency * (efficiency + 1) * 2)
         pulsesLeft--
     }
 
 
-    BigDecimal getConnectedRods() {
+    int getConnectedRods() {
         List<UraniumCell> connectedCells = connectedComponents.findAll { it in UraniumCell } as List<UraniumCell>
-        sum(connectedCells*.numberOfRods)
+        if (connectedCells) {
+            (int) connectedCells*.numberOfRods.sum()
+        }
+        else {
+            0
+        }
     }
 
-    BigDecimal getConnectedReflectors() {
+    int getConnectedReflectors() {
         connectedComponents.findAll { it in Reflector }.size()
     }
 }

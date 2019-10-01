@@ -7,26 +7,26 @@ import static com.gmail.dario.reactors.utils.Bounder.bound
 @CompileStatic
 abstract class HeatingObject extends ReactorComponent {
     
-    BigDecimal heat = 0
+    int heat = 0
     
-    BigDecimal removeHeat(BigDecimal heatToGet) {
-        BigDecimal drawnHeat = bound heatToGet toAtMost heat
+    int removeHeat(int heatToGet) {
+        int drawnHeat = bound heatToGet toAtMost heat
         heat -= drawnHeat
         return drawnHeat
     }
     
-    void putHeat(BigDecimal heatToPut) {
+    void putHeat(int heatToPut) {
         heat += heatToPut
     }
-    
-    BigDecimal getHeatPercentage() {
+
+    double getHeatPercentage() {
         heat / maxHeat
     }
 
     @Override
-    BigDecimal getDurabilityLeft() {
+    double getDurabilityLeft() {
         1 - heatPercentage
     }
 
-    abstract BigDecimal getMaxHeat()
+    abstract int getMaxHeat()
 }

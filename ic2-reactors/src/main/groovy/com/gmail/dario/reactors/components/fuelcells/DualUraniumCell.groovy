@@ -2,7 +2,7 @@ package com.gmail.dario.reactors.components.fuelcells
 
 class DualUraniumCell extends UraniumCell {
 
-    final BigDecimal numberOfRods = 2
+    final int numberOfRods = 2
     final BigDecimal euGenerated = 20
 
     DualUraniumCell() {

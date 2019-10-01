@@ -4,7 +4,7 @@ class OverclockedHeatVent extends Vent {
 
     @Override
     void tick() {
-        dissipateHeatFromReactor(36.0)
-        dissipateHeatToAir(20.0)
+        dissipateHeatFromReactor(36)
+        dissipateHeatToAir(20)
     }
 }

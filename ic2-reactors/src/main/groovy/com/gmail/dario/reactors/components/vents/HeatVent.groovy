@@ -4,7 +4,7 @@ class HeatVent extends Vent {
 
     @Override
     void tick() {
-        dissipateHeatToAir(6.0)
+        dissipateHeatToAir(6)
     }
 
 }

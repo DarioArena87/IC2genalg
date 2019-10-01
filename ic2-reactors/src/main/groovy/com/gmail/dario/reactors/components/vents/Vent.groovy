@@ -8,13 +8,13 @@ import groovy.transform.CompileStatic
 @CompileStatic
 abstract class Vent extends HeatingObject {
 
-    final BigDecimal maxHeat = 1000
+    final int maxHeat = 1000
 
-    void dissipateHeatFromReactor(BigDecimal heat) {
+    void dissipateHeatFromReactor(int heat) {
         this.heat += vessel.removeHeat(heat)
     }
 
-    void dissipateHeatToAir(BigDecimal heat) {
+    void dissipateHeatToAir(int heat) {
         this.heat -= heat
     }
 }

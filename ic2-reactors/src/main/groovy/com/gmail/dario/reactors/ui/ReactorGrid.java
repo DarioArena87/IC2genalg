@@ -70,7 +70,7 @@ public class ReactorGrid extends Composite<VerticalLayout> {
         return reactor.getEu();
     }
 
-    public BigDecimal getHeat() {
+    public int getHeat() {
         return reactor.getHeat();
     }
 }

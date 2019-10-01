@@ -5,12 +5,12 @@ import com.gmail.dario.reactors.components.fuelcells.UraniumCell
 
 abstract class Reflector extends ReactorComponent {
 
-    BigDecimal numberOfPulses = 0
+    int numberOfPulses = 0
 
     abstract BigDecimal getMaxPulses()
 
     @Override
-    BigDecimal getDurabilityLeft() {
+    double getDurabilityLeft() {
         return 1 - numberOfPulses / maxPulses
     }
 

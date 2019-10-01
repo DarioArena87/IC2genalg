@@ -8,5 +8,5 @@ abstract class ReactorComponent implements TickListener {
     
     List<ReactorComponent> connectedComponents = []
     
-    abstract BigDecimal getDurabilityLeft()
+    abstract double getDurabilityLeft()
 }

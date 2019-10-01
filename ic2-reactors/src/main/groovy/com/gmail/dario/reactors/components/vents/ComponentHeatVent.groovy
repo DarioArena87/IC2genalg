@@ -10,6 +10,6 @@ class ComponentHeatVent extends Vent {
     @Override
     void tick() {
         List<HeatingObject> heatingConnectedComponents = connectedComponents.findAll { it in HeatingObject } as List<HeatingObject>
-        heatingConnectedComponents*.removeHeat(4.0)
+        heatingConnectedComponents*.removeHeat(4)
     }
 }

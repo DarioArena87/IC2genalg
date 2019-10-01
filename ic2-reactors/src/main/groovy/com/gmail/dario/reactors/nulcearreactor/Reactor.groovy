@@ -3,14 +3,17 @@ package com.gmail.dario.reactors.nulcearreactor
 import com.gmail.dario.reactors.components.EmptyCell
 import com.gmail.dario.reactors.components.ReactorComponent
 import com.gmail.dario.reactors.components.TickListener
+import com.gmail.dario.reactors.ui.ReactorComponentMapper
+import groovy.transform.CompileStatic
 
 import static com.gmail.dario.reactors.utils.Bounder.bound
 
+@CompileStatic
 class Reactor implements TickListener {
 
-    private static final EMPTY_CELL = new EmptyCell()
+    private static final EmptyCell EMPTY_CELL = new EmptyCell()
 
-    final BigDecimal maxHeat = 10_000
+    final int maxHeat = 10_000
     int rows
     int columns
 
@@ -83,23 +86,23 @@ class Reactor implements TickListener {
         }
     }
 
-    BigDecimal heat = 0
+    int heat = 0
 
-    BigDecimal removeHeat(BigDecimal heatToGet) {
-        BigDecimal drawnHeat = bound heatToGet toAtMost heat
+    int removeHeat(int heatToGet) {
+        int drawnHeat = bound heatToGet toAtMost heat
         heat -= drawnHeat
         return drawnHeat
     }
 
-    void putHeat(BigDecimal heatToPut) {
+    void putHeat(int heatToPut) {
         heat += heatToPut
     }
 
-    BigDecimal getHeatPercentage() {
+    double getHeatPercentage() {
         heat / maxHeat
     }
 
-    BigDecimal getDurabilityLeft() {
+    double getDurabilityLeft() {
         1 - heatPercentage
     }
 }
