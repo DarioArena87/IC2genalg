@@ -3,7 +3,6 @@ package com.gmail.dario.reactors.nulcearreactor
 import com.gmail.dario.reactors.components.EmptyCell
 import com.gmail.dario.reactors.components.ReactorComponent
 import com.gmail.dario.reactors.components.TickListener
-import com.gmail.dario.reactors.ui.ReactorComponentMapper
 import groovy.transform.CompileStatic
 
 import static com.gmail.dario.reactors.utils.Bounder.bound
@@ -19,7 +18,7 @@ class Reactor implements TickListener {
 
     List<List<ReactorComponent>> components
 
-    BigDecimal eu = 0
+    int eu = 0
 
     Reactor(int rows = 0, int columns = 0) {
         setDimensions(rows, columns)

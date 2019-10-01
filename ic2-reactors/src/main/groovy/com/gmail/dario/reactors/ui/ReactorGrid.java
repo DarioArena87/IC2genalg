@@ -1,16 +1,15 @@
 package com.gmail.dario.reactors.ui;
 
-import static java.util.stream.Collectors.toList;
-
-import java.math.BigDecimal;
-import java.util.List;
-import java.util.Random;
-
 import com.gmail.dario.reactors.components.ReactorComponent;
 import com.gmail.dario.reactors.nulcearreactor.Reactor;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+
+import java.util.List;
+import java.util.Random;
+
+import static java.util.stream.Collectors.toList;
 
 public class ReactorGrid extends Composite<VerticalLayout> {
 
@@ -66,7 +65,7 @@ public class ReactorGrid extends Composite<VerticalLayout> {
         update();
     }
 
-    public BigDecimal getEuGenerated() {
+    public int getEuGenerated() {
         return reactor.getEu();
     }
 
