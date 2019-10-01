@@ -21,7 +21,7 @@ public class ReactorCommands extends Composite<VerticalLayout> {
         }
     }
 
-    private class StartSimulationEvent extends ComponentEvent<ReactorCommands> {
+    public static class StartSimulationEvent extends ComponentEvent<ReactorCommands> {
         int ticks = 6000;
 
         public StartSimulationEvent(ReactorCommands source, boolean fromClient) {

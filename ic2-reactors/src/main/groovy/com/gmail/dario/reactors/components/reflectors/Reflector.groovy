@@ -2,12 +2,17 @@ package com.gmail.dario.reactors.components.reflectors
 
 import com.gmail.dario.reactors.components.ReactorComponent
 import com.gmail.dario.reactors.components.fuelcells.UraniumCell
+import com.google.common.collect.FluentIterable
+import groovy.transform.CompileStatic
 
+import static com.google.common.collect.FluentIterable.from
+
+@CompileStatic
 abstract class Reflector extends ReactorComponent {
 
     int numberOfPulses = 0
 
-    abstract BigDecimal getMaxPulses()
+    abstract int getMaxPulses()
 
     @Override
     double getDurabilityLeft() {
@@ -16,9 +21,10 @@ abstract class Reflector extends ReactorComponent {
 
     @Override
     void tick() {
-        List<UraniumCell> connectedCells = connectedComponents.findAll { it in UraniumCell } as List<UraniumCell>
-        if (connectedCells) {
-            numberOfPulses += connectedCells*.numberOfRods.sum()
+        FluentIterable<UraniumCell> connectedUraniumCells = from(connectedComponents).filter(UraniumCell)
+
+        if (!connectedUraniumCells.isEmpty()) {
+            numberOfPulses += connectedUraniumCells.transform { it.numberOfRods }.sum() as int
         }
     }
 }

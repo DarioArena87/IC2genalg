@@ -1,11 +1,13 @@
-package com.gmail.dario.reactors.ui;
+package com.gmail.dario.reactors.ui
 
+import com.gmail.dario.reactors.ui.events.DimensionChangeEvent;
 import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.textfield.NumberField;
+import com.gmail.dario.reactors.ui.ReactorCommands.StartSimulationEvent
 
 class ReactorSimulation extends HorizontalLayout {
 
@@ -32,16 +34,22 @@ class ReactorSimulation extends HorizontalLayout {
     ReactorSimulation() {
 
         add(new Div(new H2("Reactor components"), components));
-        
-        dimensionsChooser = new DimensionsChooser(onDimensionChange: {reactorGrid.setDimensions(it.newRows, it.newColumns)});
+
+        dimensionsChooser = new DimensionsChooser().tap {
+            onDimensionChange = { DimensionChangeEvent e ->
+                reactorGrid.setDimensions(e.newRows, e.newColumns)
+            }
+        }
 
         reactorGrid = new ReactorGrid(dimensionsChooser.getRows(), dimensionsChooser.getColumns());
         
         reactorCommands = new ReactorCommands().tap {
-            onRandomize = { reactorGrid.randomize() }
+            onRandomize = {
+                reactorGrid.randomize()
+            }
 
-            onSimulate = {
-                reactorGrid.simulate(it.ticks)
+            onSimulate = { StartSimulationEvent e ->
+                reactorGrid.simulate(e.ticks)
                 euGenerated.value = reactorGrid.euGenerated.intValue()
                 heat.value = reactorGrid.heat.intValue()
             }
