@@ -18,6 +18,7 @@ class ReactorComponentsAccordion extends Accordion {
         addPanel("Heat Exchangers", HEAT_EXCHANGER, ADVANCED_HEAT_EXCHANGER, REACTOR_HEAT_EXCHANGER, COMPONENT_HEAT_EXCHANGER)
         addPanel("Cooling Cells and Condensators", COOLANT_CELL_10K, COOLANT_CELL_30K, COOLANT_CELL_60K)
         addPanel("Reflectors", NEUTRON_REFLECTOR, THICK_NEUTRON_REFLECTOR)
+        addPanel("Reactor Platings", REACTOR_PLATING, CONTAINMENT_REACTOR_PLATING, HEAT_CAPACITY_REACTOR_PLATING)
     }
 
     private AccordionPanel addPanel(String title, ReactorComponentMapper... components) {

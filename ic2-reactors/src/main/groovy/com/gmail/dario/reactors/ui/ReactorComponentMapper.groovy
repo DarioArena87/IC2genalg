@@ -14,6 +14,8 @@ import com.gmail.dario.reactors.components.heatexchangers.AdvancedHeatExchanger
 import com.gmail.dario.reactors.components.heatexchangers.ComponentHeatExchanger
 import com.gmail.dario.reactors.components.heatexchangers.HeatExchanger
 import com.gmail.dario.reactors.components.heatexchangers.ReactorHeatExchanger
+import com.gmail.dario.reactors.components.platings.ContainmentReactorPlating
+import com.gmail.dario.reactors.components.platings.ReactorPlating
 import com.gmail.dario.reactors.components.reflectors.NeutronReflector
 import com.gmail.dario.reactors.components.reflectors.ThickNeutronReflector
 import com.gmail.dario.reactors.components.vents.AdvancedHeatVent
@@ -49,8 +51,12 @@ enum ReactorComponentMapper {
     RSH_CONDENSATOR(16, RSHCondensator, { new RSHCondensator()}, "Grid_RSH-Condensator.png", "RSH-Condensator"),
     LZH_CONDENSATOR(17, LZHCondensator, { new LZHCondensator()}, "Grid_LZH-Condensator.png", "LZH-Condensator"),
 
-    NEUTRON_REFLECTOR(17, NeutronReflector, { new NeutronReflector()}, "Grid_Thick_Neutron_Reflector.png", "Thick Neutron Reflector"),
-    THICK_NEUTRON_REFLECTOR(17, ThickNeutronReflector, { new ThickNeutronReflector()}, "Grid_Neutron_Reflector.png", "Neutron Reflector");
+    NEUTRON_REFLECTOR(18, NeutronReflector, { new NeutronReflector()}, "Grid_Thick_Neutron_Reflector.png", "Thick Neutron Reflector"),
+    THICK_NEUTRON_REFLECTOR(17, ThickNeutronReflector, { new ThickNeutronReflector()}, "Grid_Neutron_Reflector.png", "Neutron Reflector"),
+
+    REACTOR_PLATING(20, ReactorPlating, {new ReactorPlating()}, "Grid_Reactor_Plating.png", "Reactor Plating"),
+    CONTAINMENT_REACTOR_PLATING(21, ContainmentReactorPlating, {new ContainmentReactorPlating()}, "Grid_Containment_Reactor_Plating.png", "Containment Reactor Plating"),
+    HEAT_CAPACITY_REACTOR_PLATING(22, ReactorPlating, {new ReactorPlating()}, "Grid_Heat-Capacity_Reactor_Plating.png", "Heat-Capacity Reactor Plating");
 
     final int id
     private final Class clazz

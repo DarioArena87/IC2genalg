@@ -3,22 +3,25 @@ package com.gmail.dario.reactors.nulcearreactor
 import com.gmail.dario.reactors.components.EmptyCell
 import com.gmail.dario.reactors.components.ReactorComponent
 import com.gmail.dario.reactors.components.TickListener
+import com.gmail.dario.reactors.components.platings.Plating
+import com.google.common.collect.FluentIterable
 import groovy.transform.CompileStatic
 
 import static com.gmail.dario.reactors.utils.Bounder.bound
+import static com.google.common.collect.FluentIterable.from
 
 @CompileStatic
 class Reactor implements TickListener {
 
     private static final EmptyCell EMPTY_CELL = new EmptyCell()
 
-    final int maxHeat = 10_000
     boolean exploded
     int rows
     int columns
 
     List<List<ReactorComponent>> components
 
+    int heat = 0
     int eu
 
     Reactor(int rows = 0, int columns = 0) {
@@ -28,6 +31,8 @@ class Reactor implements TickListener {
     void setDimensions(int rows, int columns) {
         this.eu = 0
         this.heat = 0
+
+        this.exploded = false
         this.rows = rows
         this.columns = columns
         components = new ArrayList<>(rows)
@@ -94,8 +99,6 @@ class Reactor implements TickListener {
         }
     }
 
-    int heat = 0
-
     int removeHeat(int heatToGet) {
         int drawnHeat = bound heatToGet toAtMost heat
         heat -= drawnHeat
@@ -104,6 +107,14 @@ class Reactor implements TickListener {
 
     void putHeat(int heatToPut) {
         heat += heatToPut
+    }
+
+    int getMaxHeat(){
+        10_000 + platingsHeatResistance
+    }
+
+    private int getPlatingsHeatResistance() {
+        from(components.flatten()).filter(Plating).collect { it.heatResistance }.sum() as int
     }
 
     double getHeatPercentage() {

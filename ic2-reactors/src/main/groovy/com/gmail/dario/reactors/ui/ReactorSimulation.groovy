@@ -1,6 +1,5 @@
 package com.gmail.dario.reactors.ui
 
-
 import com.gmail.dario.reactors.ui.events.DimensionChangeEvent
 import com.gmail.dario.reactors.ui.ReactorCommands
 import com.vaadin.flow.component.html.Div
@@ -42,15 +41,15 @@ class ReactorSimulation extends HorizontalLayout {
     ReactorSimulation() {
 
         add(
-            new Div(new H2("Reactor components"), new ReactorComponentsAccordion())
+                new Div(new H2("Reactor components"), new ReactorComponentsAccordion())
         )
 
         add(
-            new VerticalLayout(
-                dimensionsChooser,
-                new HorizontalLayout(reactorGrid, reactorCommands),
-                new HorizontalLayout(euGenerated, heat)
-            )
+                new VerticalLayout(
+                        dimensionsChooser,
+                        new HorizontalLayout(reactorGrid, reactorCommands),
+                        new HorizontalLayout(euGenerated, heat)
+                )
         )
 
     }
