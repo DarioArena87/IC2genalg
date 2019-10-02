@@ -13,6 +13,7 @@ class Reactor implements TickListener {
     private static final EmptyCell EMPTY_CELL = new EmptyCell()
 
     final int maxHeat = 10_000
+    boolean exploded
     int rows
     int columns
 
@@ -45,6 +46,10 @@ class Reactor implements TickListener {
 
     @Override
     void tick() {
+        if (exploded) {
+            return
+        }
+
         boolean explodedComponent = false
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
@@ -61,6 +66,8 @@ class Reactor implements TickListener {
             disconnectComponents()
             connectComponents()
         }
+
+        exploded = heat >= maxHeat
     }
 
     void disconnectComponents() {

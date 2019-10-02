@@ -1,6 +1,7 @@
 package com.gmail.dario.reactors.ui
 
-import com.vaadin.flow.component.ComponentEvent
+import com.gmail.dario.reactors.ui.events.RandomizeEvent
+import com.gmail.dario.reactors.ui.events.StartSimulationEvent
 import com.vaadin.flow.component.ComponentEventListener
 import com.vaadin.flow.component.Composite
 import com.vaadin.flow.component.Text
@@ -15,21 +16,6 @@ import groovy.transform.CompileStatic
 class ReactorCommands extends Composite<VerticalLayout> {
 
     final Button randomize = new Button("Randomize", { fireEvent(new RandomizeEvent(this)) });
-
-    static class RandomizeEvent extends ComponentEvent<ReactorCommands> {
-        RandomizeEvent(final ReactorCommands source) {
-            super(source, false);
-        }
-    }
-
-    static class StartSimulationEvent extends ComponentEvent<ReactorCommands> {
-        final int ticks
-
-        StartSimulationEvent(ReactorCommands source, int ticks = 6000) {
-            super(source, false);
-            this.ticks = ticks;
-        }
-    }
 
     final NumberField ticks = new NumberField(hasControls: true, step: 1, value: 6000);
 

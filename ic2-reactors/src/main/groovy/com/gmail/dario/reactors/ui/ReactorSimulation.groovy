@@ -2,12 +2,14 @@ package com.gmail.dario.reactors.ui
 
 
 import com.gmail.dario.reactors.ui.events.DimensionChangeEvent
+import com.gmail.dario.reactors.ui.ReactorCommands
 import com.vaadin.flow.component.html.Div
 import com.vaadin.flow.component.html.H2
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.textfield.NumberField
 import com.vaadin.flow.data.binder.Binder
+import com.gmail.dario.reactors.ui.events.StartSimulationEvent
 
 class ReactorSimulation extends HorizontalLayout {
 
@@ -26,7 +28,7 @@ class ReactorSimulation extends HorizontalLayout {
             reactorGrid.randomize()
         }
 
-        onSimulate = { ReactorCommands.StartSimulationEvent e ->
+        onSimulate = { StartSimulationEvent e ->
             reactorGrid.simulate(e.ticks)
             euGenerated.value = reactorGrid.euGenerated.intValue()
             heat.value = reactorGrid.heat.intValue()
