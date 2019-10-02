@@ -7,14 +7,15 @@ import com.vaadin.flow.component.html.H2
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.textfield.NumberField
+import com.vaadin.flow.data.binder.Binder
 
 class ReactorSimulation extends HorizontalLayout {
-
-    private static final long serialVersionUID = -8525947343357750120L
 
     DimensionsChooser dimensionsChooser = new DimensionsChooser().tap {
         onDimensionChange = { DimensionChangeEvent e ->
             reactorGrid.setDimensions(e.newRows, e.newColumns)
+            euGenerated.value = reactorGrid.euGenerated.intValue()
+            heat.value = reactorGrid.heat.intValue()
         }
     }
 

@@ -18,13 +18,15 @@ class Reactor implements TickListener {
 
     List<List<ReactorComponent>> components
 
-    int eu = 0
+    int eu
 
     Reactor(int rows = 0, int columns = 0) {
         setDimensions(rows, columns)
     }
 
     void setDimensions(int rows, int columns) {
+        this.eu = 0
+        this.heat = 0
         this.rows = rows
         this.columns = columns
         components = new ArrayList<>(rows)

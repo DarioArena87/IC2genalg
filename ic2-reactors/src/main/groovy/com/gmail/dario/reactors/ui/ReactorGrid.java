@@ -42,7 +42,8 @@ public class ReactorGrid extends Composite<VerticalLayout> {
         List<ReactorComponent> randomComponents = new Random().ints(reactor.getRows() * reactor.getColumns(), 0, ReactorComponentMapper.values().length)
                                                               .boxed()
                                                               .map(i -> ReactorComponentMapper.values()[i])
-                                                              .map(ReactorComponentMapper::create).collect(toList());
+                                                              .map(ReactorComponentMapper::create)
+                                                              .collect(toList());
         
         int k = 0;
         for (int i = 0; i < reactor.getRows(); i++) {
