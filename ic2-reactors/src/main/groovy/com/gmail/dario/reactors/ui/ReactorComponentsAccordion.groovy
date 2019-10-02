@@ -1,5 +1,6 @@
 package com.gmail.dario.reactors.ui
 
+import com.vaadin.flow.component.Component
 import com.vaadin.flow.component.accordion.Accordion
 import com.vaadin.flow.component.accordion.AccordionPanel
 import groovy.transform.CompileStatic
@@ -19,10 +20,10 @@ class ReactorComponentsAccordion extends Accordion {
         addPanel("Reflectors", NEUTRON_REFLECTOR, THICK_NEUTRON_REFLECTOR)
     }
 
-    private addPanel(String title, ReactorComponentMapper... components){
+    private AccordionPanel addPanel(String title, ReactorComponentMapper... components) {
         add new AccordionPanel().tap {
             summaryText = title
-            addContent(components.collect {new ReactorComponentLabel(it.image, it.description)} as ReactorComponentLabel[])
+            addContent(components.collect { new ReactorComponentLabel(it.image, it.description) } as Component[])
         }
     }
 }
