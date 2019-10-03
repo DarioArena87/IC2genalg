@@ -9,10 +9,6 @@ public class StartSimulationEvent extends ComponentEvent<ReactorCommands> {
         this.ticks = ticks;
     }
 
-    public StartSimulationEvent(ReactorCommands source) {
-        this(source, 6000);
-    }
-
     public final int getTicks() {
         return ticks;
     }

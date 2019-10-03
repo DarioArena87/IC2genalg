@@ -6,23 +6,13 @@ import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
-import java.util.List;
-import java.util.Random;
-
-import static java.util.stream.Collectors.toList;
-
 public class ReactorGrid extends Composite<VerticalLayout> {
 
     private static final long serialVersionUID = -4533578265973189967L;
     private Reactor reactor;
     
-    public ReactorGrid(final int rows, final int columns) {
-        this.reactor = new Reactor(rows, columns);
-        update();
-    }
-    
-    public void setDimensions(int rows, int columns) {
-        reactor.setDimensions(rows, columns);
+    public ReactorGrid(Reactor reactor) {
+        this.reactor = reactor;
         update();
     }
 
@@ -36,41 +26,5 @@ public class ReactorGrid extends Composite<VerticalLayout> {
             }
             getContent().add(row);
         }
-    }
-
-    public void randomize() {
-        List<ReactorComponent> randomComponents = new Random().ints(reactor.getRows() * reactor.getColumns(), 0, ReactorComponentMapper.values().length)
-                                                              .boxed()
-                                                              .map(i -> ReactorComponentMapper.values()[i])
-                                                              .map(ReactorComponentMapper::create)
-                                                              .collect(toList());
-        
-        int k = 0;
-        for (int i = 0; i < reactor.getRows(); i++) {
-            for (int j = 0; j < reactor.getColumns(); j++) {
-                reactor.install(randomComponents.get(k++), i, j);
-            }
-        }
-
-        reactor.connectComponents();
-
-        update();
-        
-    }
-
-    public void simulate(int ticks) {
-        for (int i = 0; i < ticks; i++) {
-            reactor.tick();
-        }
-
-        update();
-    }
-
-    public int getEuGenerated() {
-        return reactor.getEu();
-    }
-
-    public int getHeat() {
-        return reactor.getHeat();
     }
 }

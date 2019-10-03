@@ -4,7 +4,6 @@ import com.gmail.dario.reactors.components.EmptyCell
 import com.gmail.dario.reactors.components.ReactorComponent
 import com.gmail.dario.reactors.components.TickListener
 import com.gmail.dario.reactors.components.platings.Plating
-import com.google.common.collect.FluentIterable
 import groovy.transform.CompileStatic
 
 import static com.gmail.dario.reactors.utils.Bounder.bound
@@ -114,7 +113,13 @@ class Reactor implements TickListener {
     }
 
     private int getPlatingsHeatResistance() {
-        from(components.flatten()).filter(Plating).collect { it.heatResistance }.sum() as int
+        List<Integer> heatResistances = from(components.flatten()).filter(Plating).collect { it.heatResistance }
+        if(!heatResistances) {
+            0
+        }
+        else {
+            heatResistances.sum() as int
+        }
     }
 
     double getHeatPercentage() {

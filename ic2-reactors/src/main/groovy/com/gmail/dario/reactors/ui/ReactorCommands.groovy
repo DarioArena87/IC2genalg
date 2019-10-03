@@ -15,9 +15,9 @@ import groovy.transform.CompileStatic
 @CompileStatic
 class ReactorCommands extends Composite<VerticalLayout> {
 
-    final Button randomize = new Button("Randomize", { fireEvent(new RandomizeEvent(this)) });
+    final Button randomize = new Button("Randomize", { fireEvent(new RandomizeEvent(this)) })
 
-    final NumberField ticks = new NumberField(hasControls: true, step: 1, value: 6000);
+    final NumberField ticks = new NumberField(hasControls: true, step: 1, value: 6000)
 
     final Button simulate = new Button("Simulate", { fireEvent(new StartSimulationEvent(this, ticks.value.intValue())) })
 
