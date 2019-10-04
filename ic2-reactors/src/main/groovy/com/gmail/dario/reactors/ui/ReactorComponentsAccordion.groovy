@@ -22,9 +22,8 @@ class ReactorComponentsAccordion extends Accordion {
     }
 
     private AccordionPanel addPanel(String title, ReactorComponentMapper... components) {
-        add new AccordionPanel().tap {
-            summaryText = title
-            addContent(components.collect { new ReactorComponentLabel(it.image, it.description) } as Component[])
+        add new AccordionPanel(summaryText: title).tap {
+            addContent(components.collect { new ReactorComponentLabel(it) } as Component[])
         }
     }
 }
