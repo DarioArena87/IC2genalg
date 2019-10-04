@@ -1,6 +1,5 @@
-package com.gmail.dario.reactors.ui.events;
+package com.gmail.dario.reactors.ui.reactorcommands;
 
-import com.gmail.dario.reactors.ui.ReactorCommands;
 import com.vaadin.flow.component.ComponentEvent;
 
 public class StartSimulationEvent extends ComponentEvent<ReactorCommands> {

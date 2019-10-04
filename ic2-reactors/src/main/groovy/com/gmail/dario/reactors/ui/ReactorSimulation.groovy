@@ -2,18 +2,23 @@ package com.gmail.dario.reactors.ui
 
 import com.gmail.dario.reactors.components.ReactorComponent
 import com.gmail.dario.reactors.nulcearreactor.Reactor
-import com.gmail.dario.reactors.ui.events.DimensionChangeEvent
-import com.gmail.dario.reactors.ui.events.StartSimulationEvent
+import com.gmail.dario.reactors.ui.dimensionschooser.DimensionChangeEvent
+import com.gmail.dario.reactors.ui.dimensionschooser.DimensionsChooser
+import com.gmail.dario.reactors.ui.reactorcommands.ReactorCommands
+import com.gmail.dario.reactors.ui.reactorcommands.StartSimulationEvent
 import com.vaadin.flow.component.UI
 import com.vaadin.flow.component.html.Div
 import com.vaadin.flow.component.html.H2
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.textfield.NumberField
+import groovy.util.logging.Log
 
 import static java.util.stream.Collectors.toList
 
 class ReactorSimulation extends HorizontalLayout {
+
+    ReactorSimulationThread reactorSimulationThread;
 
     DimensionsChooser dimensionsChooser = new DimensionsChooser().tap {
         onDimensionChange = { DimensionChangeEvent e ->
@@ -33,7 +38,15 @@ class ReactorSimulation extends HorizontalLayout {
         }
 
         onSimulate = { StartSimulationEvent e ->
-            new ReactorSimulationThread(this.UI.get(), this, reactor, e.ticks).start()
+            reactorSimulationThread = new ReactorSimulationThread(this.UI.get(), this, reactor, e.ticks)
+            reactorSimulationThread.start()
+        }
+
+        onStopSimulation = {
+            if (reactorSimulationThread) {
+                reactorSimulationThread.terminate = true
+            }
+            reactorSimulationThread = null;
         }
     }
 
@@ -47,11 +60,11 @@ class ReactorSimulation extends HorizontalLayout {
 
     ReactorSimulation() {
 
-        add(
+        add (
             new Div(new H2("Reactor components"), new ReactorComponentsAccordion())
         )
 
-        add(
+        add (
             new VerticalLayout(
                 dimensionsChooser,
                 new HorizontalLayout(reactorGrid, reactorCommands),
@@ -61,12 +74,15 @@ class ReactorSimulation extends HorizontalLayout {
 
     }
 
+    @Log
     private static class ReactorSimulationThread extends Thread {
 
+        public static final int UPDATE_INTERVAL = 250
         UI ui
         ReactorSimulation reactorSimulation
         Reactor reactor
         int ticks
+        boolean terminate
 
         ReactorSimulationThread(UI ui, ReactorSimulation reactorSimulation, Reactor reactor, int ticks){
             this.ui = ui
@@ -77,9 +93,9 @@ class ReactorSimulation extends HorizontalLayout {
 
         @Override
         void run() {
-            for (int i = 0; i < ticks; i++) {
+            for (int i = 0; i < ticks && !terminate; i++) {
                 reactor.tick();
-                if (i % 20 == 0) {
+                if (i % UPDATE_INTERVAL == 0) {
                     updateUi()
                 }
             }
@@ -87,7 +103,7 @@ class ReactorSimulation extends HorizontalLayout {
             updateUi()
         }
 
-        private updateUi(){
+        private updateUi() {
             ui.access {
                 reactorSimulation.reactorGrid.update()
                 reactorSimulation.euGenerated.value = reactor.eu
