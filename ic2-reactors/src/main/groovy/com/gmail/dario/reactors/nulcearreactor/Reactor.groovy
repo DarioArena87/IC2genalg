@@ -14,6 +14,7 @@ class Reactor implements TickListener {
 
     private static final EmptyCell EMPTY_CELL = new EmptyCell()
 
+    int maxHeat = 10_000
     boolean exploded
     int rows
     int columns
@@ -96,6 +97,18 @@ class Reactor implements TickListener {
                 }
             }
         }
+
+        maxHeat = 10_000 + platingsHeatResistance
+    }
+
+    private int getPlatingsHeatResistance() {
+        def heatResistances = from(components.flatten()).filter(Plating)*.heatResistance
+        if(!heatResistances) {
+            0
+        }
+        else {
+            heatResistances.sum() as int
+        }
     }
 
     int removeHeat(int heatToGet) {
@@ -106,20 +119,6 @@ class Reactor implements TickListener {
 
     void putHeat(int heatToPut) {
         heat += heatToPut
-    }
-
-    int getMaxHeat(){
-        10_000 + platingsHeatResistance
-    }
-
-    private int getPlatingsHeatResistance() {
-        List<Integer> heatResistances = from(components.flatten()).filter(Plating).collect { it.heatResistance }
-        if(!heatResistances) {
-            0
-        }
-        else {
-            heatResistances.sum() as int
-        }
     }
 
     double getHeatPercentage() {
