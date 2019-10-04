@@ -18,7 +18,7 @@ class ReactorCommands extends Composite<VerticalLayout> {
 
     final Button randomize = new Button("Randomize", { fireEvent(new RandomizeEvent(this)) })
 
-    final NumberField ticks = new NumberField(hasControls: true, step: 1, value: 6000)
+    final NumberField ticks = new NumberField(hasControls: true, step: 1, value: 10_000, min: 0, max: 500_000)
 
     final Button simulate = new Button(new Icon(VaadinIcon.PLAY), { fireEvent(new StartSimulationEvent(this, ticks.value.intValue())) })
 
