@@ -4,10 +4,12 @@ import com.gmail.dario.reactors.components.EmptyCell
 import com.gmail.dario.reactors.components.ReactorComponent
 import com.gmail.dario.reactors.components.TickListener
 import com.gmail.dario.reactors.components.platings.Plating
+import com.gmail.dario.reactors.ui.ReactorComponentMapper
 import groovy.transform.CompileStatic
 
 import static com.gmail.dario.reactors.utils.Bounder.bound
 import static com.google.common.collect.FluentIterable.from
+import static java.util.stream.Collectors.toList
 
 @CompileStatic
 class Reactor implements TickListener {
@@ -127,5 +129,25 @@ class Reactor implements TickListener {
 
     double getDurabilityLeft() {
         1 - heatPercentage
+    }
+
+    static Reactor random(int rows, int columns){
+        def reactor = new Reactor(rows, columns)
+        List<ReactorComponent> randomComponents = new Random().ints(reactor.rows * reactor.columns, 0, ReactorComponentMapper.values().length)
+                                                              .boxed()
+                                                              .map { ReactorComponentMapper.values()[it] }
+                                                              .map { it.create() }
+                                                              .collect(toList())
+
+        int k = 0;
+        for (int i = 0; i < reactor.rows; i++) {
+            for (int j = 0; j < reactor.columns; j++) {
+                reactor.install(randomComponents[k++], i, j)
+            }
+        }
+
+        reactor.connectComponents();
+        reactor.exploded = false
+        return reactor;
     }
 }

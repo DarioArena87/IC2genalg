@@ -52,7 +52,7 @@ enum ReactorComponentMapper {
     LZH_CONDENSATOR(17, LZHCondensator, { new LZHCondensator()}, "Grid_LZH-Condensator.png", "LZH-Condensator"),
 
     NEUTRON_REFLECTOR(18, NeutronReflector, { new NeutronReflector()}, "Grid_Thick_Neutron_Reflector.png", "Thick Neutron Reflector"),
-    THICK_NEUTRON_REFLECTOR(17, ThickNeutronReflector, { new ThickNeutronReflector()}, "Grid_Neutron_Reflector.png", "Neutron Reflector"),
+    THICK_NEUTRON_REFLECTOR(19, ThickNeutronReflector, { new ThickNeutronReflector()}, "Grid_Neutron_Reflector.png", "Neutron Reflector"),
 
     REACTOR_PLATING(20, ReactorPlating, {new ReactorPlating()}, "Grid_Reactor_Plating.png", "Reactor Plating"),
     CONTAINMENT_REACTOR_PLATING(21, ContainmentReactorPlating, {new ContainmentReactorPlating()}, "Grid_Containment_Reactor_Plating.png", "Containment Reactor Plating"),

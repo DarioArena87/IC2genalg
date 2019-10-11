@@ -2,9 +2,7 @@ package com.gmail.dario.reactors.ui
 
 import com.gmail.dario.reactors.nulcearreactor.Reactor
 import com.vaadin.flow.component.UI
-import groovy.transform.CompileStatic
 
-@CompileStatic
 class ReactorSimulationThread extends Thread {
     public static final int UPDATE_INTERVAL = 250
     UI ui
