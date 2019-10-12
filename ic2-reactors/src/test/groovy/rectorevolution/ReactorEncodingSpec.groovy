@@ -4,7 +4,7 @@ import com.gmail.dario.reactors.nulcearreactor.Reactor
 import com.gmail.dario.reactors.ui.reactorevolution.ReactorGenotypeEncoder
 import spock.lang.Specification
 
-class ReactorEvolutionSpec extends Specification {
+class ReactorEncodingSpec extends Specification {
 
     def "Gene reactor decoding/encoding"() {
         given: "a pre-built reactor"

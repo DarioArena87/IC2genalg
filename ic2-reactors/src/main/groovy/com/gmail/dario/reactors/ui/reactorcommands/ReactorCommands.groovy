@@ -1,6 +1,7 @@
 package com.gmail.dario.reactors.ui.reactorcommands
 
 import com.gmail.dario.reactors.ui.reactorcommands.events.RandomizeEvent
+import com.gmail.dario.reactors.ui.reactorcommands.events.StartEvolutionEvent
 import com.gmail.dario.reactors.ui.reactorcommands.events.StartSimulationEvent
 import com.gmail.dario.reactors.ui.reactorcommands.events.StopSimulationEvent
 import com.vaadin.flow.component.ComponentEventListener
@@ -26,7 +27,7 @@ class ReactorCommands extends Composite<VerticalLayout> {
 
     final Button stopSimulation = new Button(new Icon(VaadinIcon.STOP), { fireEvent(new StopSimulationEvent(this)) })
 
-    final Button evolve = new Button("Evolve")
+    final Button evolve = new Button("Evolve", {fireEvent(new StartEvolutionEvent(this, ticks.value.intValue()))})
 
     ReactorCommands() {
         content.add (
@@ -36,16 +37,20 @@ class ReactorCommands extends Composite<VerticalLayout> {
         )
     }
 
-    Registration setOnRandomize(final ComponentEventListener<RandomizeEvent> e) {
-        return addListener(RandomizeEvent.class, e)
+    Registration setOnRandomize(ComponentEventListener<RandomizeEvent> e) {
+        return addListener(RandomizeEvent, e)
     }
 
-    Registration setOnSimulate(final ComponentEventListener<StartSimulationEvent> e) {
-        return addListener(StartSimulationEvent.class, e)
+    Registration setOnSimulate(ComponentEventListener<StartSimulationEvent> e) {
+        return addListener(StartSimulationEvent, e)
     }
 
-    Registration setOnStopSimulation(final ComponentEventListener<StopSimulationEvent> e) {
-        return addListener(StopSimulationEvent.class, e)
+    Registration setOnStopSimulation(ComponentEventListener<StopSimulationEvent> e) {
+        return addListener(StopSimulationEvent, e)
+    }
+
+    Registration setOnStartEvolution(ComponentEventListener<StartEvolutionEvent> e) {
+        return addListener(StartEvolutionEvent, e)
     }
 
 }

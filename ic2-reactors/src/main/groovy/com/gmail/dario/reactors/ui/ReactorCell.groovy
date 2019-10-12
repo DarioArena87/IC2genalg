@@ -22,7 +22,7 @@ class ReactorCell extends Composite<Div> {
             image = new Image();
         }
         else {
-            image = new Image("/images/" + mappedComponent.getImage(), mappedComponent.getDescription());
+            image = new Image("/images/" + mappedComponent.image, mappedComponent.description);
         }
         image.width = "32px";
         image.height = "32px";

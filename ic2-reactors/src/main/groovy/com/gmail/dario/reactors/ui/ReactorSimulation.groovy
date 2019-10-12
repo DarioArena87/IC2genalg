@@ -5,6 +5,7 @@ import com.gmail.dario.reactors.nulcearreactor.Reactor
 import com.gmail.dario.reactors.ui.dimensionschooser.DimensionChangeEvent
 import com.gmail.dario.reactors.ui.dimensionschooser.DimensionsChooser
 import com.gmail.dario.reactors.ui.reactorcommands.ReactorCommands
+import com.gmail.dario.reactors.ui.reactorcommands.events.StartEvolutionEvent
 import com.gmail.dario.reactors.ui.reactorcommands.events.StartSimulationEvent
 import com.vaadin.flow.component.html.Div
 import com.vaadin.flow.component.html.H2
@@ -16,7 +17,9 @@ import static java.util.stream.Collectors.toList
 
 class ReactorSimulation extends HorizontalLayout {
 
-    ReactorSimulationThread reactorSimulationThread;
+    ReactorSimulationThread reactorSimulationThread
+
+    ReactorEvolutionThread reactorEvolutionThread
 
     DimensionsChooser dimensionsChooser = new DimensionsChooser().tap {
         onDimensionChange = { DimensionChangeEvent e ->
@@ -36,7 +39,7 @@ class ReactorSimulation extends HorizontalLayout {
         }
 
         onSimulate = { StartSimulationEvent e ->
-            reactorSimulationThread = new ReactorSimulationThread(this.UI.get(), this, reactor, e.ticks)
+            reactorSimulationThread = new ReactorSimulationThread(UI.get(), this, reactor, e.ticks)
             reactorSimulationThread.start()
         }
 
@@ -46,6 +49,11 @@ class ReactorSimulation extends HorizontalLayout {
             }
             reactorSimulationThread = null;
         }
+
+        onStartEvolution = { StartEvolutionEvent e ->
+            reactorEvolutionThread = new ReactorEvolutionThread(UI.get(), this, reactor, e.simulationTicks)
+            reactorEvolutionThread.start()
+        }
     }
 
     NumberField euGenerated = new NumberField(label: "EU", value: 0)
@@ -54,7 +62,7 @@ class ReactorSimulation extends HorizontalLayout {
 
     Reactor reactor = new Reactor(dimensionsChooser.rows, dimensionsChooser.columns)
 
-    ReactorGrid reactorGrid = new ReactorGrid(reactor);
+    ReactorGrid reactorGrid = new ReactorGrid(reactor: reactor);
 
     ReactorSimulation() {
 

@@ -2,6 +2,7 @@ package com.gmail.dario.reactors.ui;
 
 import com.gmail.dario.reactors.nulcearreactor.Reactor;
 import com.gmail.dario.reactors.ui.reactorevolution.ReactorGenotypeEncoder;
+import com.vaadin.flow.component.UI;
 import io.jenetics.Genotype;
 import io.jenetics.IntegerGene;
 import io.jenetics.engine.Engine;
@@ -12,10 +13,14 @@ public class ReactorEvolutionThread extends Thread {
     private static final double EU_WEIGHT = 0.5;
     private static final double ENDURANCE_LEFT_WEIGHT = 0.5;
 
+    private final UI ui;
+    private final ReactorSimulation reactorSimulation;
     private final ReactorGenotypeEncoder reactorEncoder;
     private final int simulationTicks;
 
-    public ReactorEvolutionThread(Reactor reactor, int simulationTicks) {
+    public ReactorEvolutionThread(UI ui, ReactorSimulation reactorSimulation, Reactor reactor, int simulationTicks) {
+        this.ui = ui;
+        this.reactorSimulation = reactorSimulation;
         this.reactorEncoder = new ReactorGenotypeEncoder(reactor);
         this.simulationTicks = simulationTicks;
     }
@@ -27,15 +32,16 @@ public class ReactorEvolutionThread extends Thread {
             reactor.tick();
         }
 
+        double points;
         if (reactor.isExploded()) {
-            return 0d;
+            points = 0d;
+        }
+        else {
+            points = reactor.getEu() - reactor.getEu() * reactor.getHeatPercentage();
         }
 
-        if (reactor.getHeatPercentage() > 0) {
-            return reactor.getEu() / reactor.getHeatPercentage();
-        }
-
-        return reactor.getEu();
+        System.out.println("Points: " + points);
+        return points;
     }
 
     @Override
@@ -47,6 +53,10 @@ public class ReactorEvolutionThread extends Thread {
                                                    .stream()
                                                    .limit(100)
                                                    .collect(EvolutionResult.toBestGenotype());
+
+        ui.access(() -> {
+            reactorSimulation.getReactorGrid().setReactor(reactorEncoder.decode(bestGenotype));
+        });
 
     }
 

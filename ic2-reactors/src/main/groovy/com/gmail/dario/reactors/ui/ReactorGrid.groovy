@@ -11,8 +11,8 @@ import groovy.transform.CompileStatic
 class ReactorGrid extends Composite<VerticalLayout> {
 
     private Reactor reactor;
-    
-    ReactorGrid(Reactor reactor) {
+
+    void setReactor(Reactor reactor){
         this.reactor = reactor;
         update();
     }
