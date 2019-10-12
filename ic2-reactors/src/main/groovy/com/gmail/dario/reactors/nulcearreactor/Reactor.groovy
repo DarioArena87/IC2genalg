@@ -62,7 +62,7 @@ class Reactor implements TickListener {
             for (int j = 0; j < columns; j++) {
                 ReactorComponent component = components[i][j]
                 component.tick()
-                if (component.durabilityLeft == 0) {
+                if (component.durabilityLeft <= 0) {
                     components[i][j] = EMPTY_CELL
                     explodedComponent = true
                 }

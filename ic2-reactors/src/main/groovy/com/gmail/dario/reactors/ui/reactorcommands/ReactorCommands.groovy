@@ -6,10 +6,10 @@ import com.gmail.dario.reactors.ui.reactorcommands.events.StartSimulationEvent
 import com.gmail.dario.reactors.ui.reactorcommands.events.StopSimulationEvent
 import com.vaadin.flow.component.ComponentEventListener
 import com.vaadin.flow.component.Composite
-import com.vaadin.flow.component.Text
 import com.vaadin.flow.component.button.Button
 import com.vaadin.flow.component.icon.Icon
 import com.vaadin.flow.component.icon.VaadinIcon
+import com.vaadin.flow.component.orderedlayout.FlexComponent
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.textfield.NumberField
@@ -21,18 +21,23 @@ class ReactorCommands extends Composite<VerticalLayout> {
 
     final Button randomize = new Button("Randomize", { fireEvent(new RandomizeEvent(this)) })
 
-    final NumberField ticks = new NumberField(hasControls: true, step: 1, value: 10_000, min: 0, max: 500_000)
+    final NumberField ticks = new NumberField(hasControls: true, step: 1, value: 10_000, min: 0, max: 500_000, label: "Ticks")
 
     final Button simulate = new Button(new Icon(VaadinIcon.PLAY), { fireEvent(new StartSimulationEvent(this, ticks.value.intValue())) })
 
     final Button stopSimulation = new Button(new Icon(VaadinIcon.STOP), { fireEvent(new StopSimulationEvent(this)) })
 
-    final Button evolve = new Button("Evolve", {fireEvent(new StartEvolutionEvent(this, ticks.value.intValue()))})
+    final Button evolve = new Button("Evolve", { fireEvent(new StartEvolutionEvent(this, ticks.value.intValue())) })
 
     ReactorCommands() {
-        content.add (
+        def simulationControls = new HorizontalLayout().tap {
+            addAndExpand simulate, ticks, stopSimulation
+            alignItems = FlexComponent.Alignment.BASELINE
+        }
+
+        content.add(
             randomize,
-            new HorizontalLayout(simulate, ticks, new Text("Ticks"), stopSimulation),
+            simulationControls,
             evolve
         )
     }

@@ -1,6 +1,5 @@
 package com.gmail.dario.reactors.ui
 
-
 import com.gmail.dario.reactors.nulcearreactor.Reactor
 import com.gmail.dario.reactors.ui.dimensionschooser.DimensionChangeEvent
 import com.gmail.dario.reactors.ui.dimensionschooser.DimensionsChooser
@@ -12,8 +11,6 @@ import com.vaadin.flow.component.html.H2
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.textfield.NumberField
-
-import static java.util.stream.Collectors.toList
 
 class ReactorSimulation extends HorizontalLayout {
 
@@ -79,24 +76,6 @@ class ReactorSimulation extends HorizontalLayout {
             )
         )
 
-    }
-
-    private static void randomize(Reactor reactor) {
-        def randomComponents = new Random().ints(reactor.rows * reactor.columns, 0, ReactorComponentMapper.values().length)
-                                           .boxed()
-                                           .map { ReactorComponentMapper.values()[it] }
-                                           .map { it.create() }
-                                           .collect(toList())
-
-        int k = 0;
-        for (int i = 0; i < reactor.rows; i++) {
-            for (int j = 0; j < reactor.columns; j++) {
-                reactor.install(randomComponents[k++], i, j)
-            }
-        }
-
-        reactor.connectComponents();
-        reactor.exploded = false
     }
 
 }

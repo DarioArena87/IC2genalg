@@ -13,7 +13,7 @@ class ReactorCell extends Composite<Div> {
     int componentId;
     Image image;
 
-    ReactorCell(int row, int column, int componentId) {
+    ReactorCell(int row, int column, int componentId, double durabilityLeft) {
         this.row = row
         this.column = column
         this.componentId = componentId
@@ -24,8 +24,18 @@ class ReactorCell extends Composite<Div> {
         else {
             image = new Image("/images/" + mappedComponent.image, mappedComponent.description);
         }
-        image.width = "32px";
-        image.height = "32px";
-        content.add(image);
+
+        image.with {
+            width = "32px"
+            height = "32px"
+        }
+
+        content.with {
+            add image
+            if (durabilityLeft < 1) {
+                style.set("position", "relative")
+                add new DurabilityBar(durabilityLeft)
+            }
+        }
     }
 }
