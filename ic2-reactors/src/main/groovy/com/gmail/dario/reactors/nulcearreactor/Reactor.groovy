@@ -133,7 +133,7 @@ class Reactor implements TickListener {
 
     static Reactor random(int rows, int columns){
         def reactor = new Reactor(rows, columns)
-        List<ReactorComponent> randomComponents = new Random().ints(reactor.rows * reactor.columns, 0, ReactorComponentMapper.values().length)
+        List<ReactorComponent> randomComponents = new Random().ints(rows * columns, 0, ReactorComponentMapper.values().length)
                                                               .boxed()
                                                               .map { ReactorComponentMapper.values()[it] }
                                                               .map { it.create() }
