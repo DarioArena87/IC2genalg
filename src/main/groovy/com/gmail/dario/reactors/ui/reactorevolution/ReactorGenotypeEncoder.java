@@ -9,6 +9,8 @@ import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
@@ -24,15 +26,15 @@ public class ReactorGenotypeEncoder {
     }
 
     public Genotype<IntegerGene> encode() {
-        return Genotype.of(
-            IntegerChromosome.of(
-                reactor.getComponents()
-                       .stream()
-                       .flatMap(Collection::stream)
-                       .map(ReactorGenotypeEncoder::newComponentGene)
-                       .collect(toList())
-            )
-        );
+        return Genotype.of(IntegerChromosome.of(getIntegerGenes()));
+    }
+
+    private List<IntegerGene> getIntegerGenes() {
+        return getComponentStream().map(ReactorGenotypeEncoder::newComponentGene).collect(toList());
+    }
+
+    private Stream<ReactorComponent> getComponentStream() {
+        return reactor.getComponents().stream().flatMap(Collection::stream);
     }
 
     public Reactor decode(Genotype<IntegerGene> reactorGenotype) {
@@ -41,11 +43,16 @@ public class ReactorGenotypeEncoder {
         final Chromosome<IntegerGene> chromosome = reactorGenotype.getChromosome();
         for (int row = 0; row < reactor.getRows(); row++) {
             for (int column = 0; column < reactor.getColumns(); column++) {
-                IntegerGene gene = chromosome.getGene(reactor.getColumns() * row + column);
-                phenotype.install(ReactorComponentMapper.getAt(gene.getAllele()).create(), row, column);
+                ReactorComponent component = getReactorComponent(chromosome, row, column);
+                phenotype.install(component, row, column);
             }
         }
         return phenotype;
+    }
+
+    private ReactorComponent getReactorComponent(Chromosome<IntegerGene> chromosome, int row, int column) {
+        IntegerGene gene = chromosome.getGene(reactor.getColumns() * row + column);
+        return ReactorComponentMapper.getAt(gene.getAllele()).create();
     }
 
     private static IntegerGene newComponentGene(ReactorComponent component) {
