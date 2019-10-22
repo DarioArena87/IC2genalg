@@ -6,6 +6,9 @@ import com.gmail.dario.reactors.components.TickListener
 import com.gmail.dario.reactors.components.platings.Plating
 import com.gmail.dario.reactors.ui.ReactorComponentMapper
 import groovy.transform.CompileStatic
+import sun.tools.jar.CommandLine
+
+import java.util.stream.Stream
 
 import static com.gmail.dario.reactors.utils.Bounder.bound
 import static com.google.common.collect.FluentIterable.from
@@ -27,13 +30,8 @@ class Reactor implements TickListener {
     int eu
 
     Reactor(int rows = 0, int columns = 0) {
-        setDimensions(rows, columns)
-    }
-
-    void setDimensions(int rows, int columns) {
         this.eu = 0
         this.heat = 0
-
         this.exploded = false
         this.rows = rows
         this.columns = columns
@@ -45,6 +43,7 @@ class Reactor implements TickListener {
             }
         }
     }
+
 
     void install(ReactorComponent component, int row, int column) {
         components[row][column] = component
@@ -131,23 +130,45 @@ class Reactor implements TickListener {
         1 - heatPercentage
     }
 
-    static Reactor random(int rows, int columns){
-        def reactor = new Reactor(rows, columns)
-        List<ReactorComponent> randomComponents = new Random().ints(rows * columns, 0, ReactorComponentMapper.values().length)
-                                                              .boxed()
-                                                              .map { ReactorComponentMapper.values()[it] }
-                                                              .map { it.create() }
-                                                              .collect(toList())
+    static Builder builder(int rows, int columns) {
+        new Builder(rows, columns)
+    }
 
-        int k = 0;
-        for (int i = 0; i < reactor.rows; i++) {
-            for (int j = 0; j < reactor.columns; j++) {
-                reactor.install(randomComponents[k++], i, j)
+    static class Builder {
+        private final int rows
+        private final int columns
+
+        Builder(int rows, int columns){
+            this.rows = rows
+            this.columns = columns
+        }
+
+        Reactor random() {
+            List<Integer> componentList = new Random().ints(rows * columns, 0, ReactorComponentMapper.values().length)
+                                                      .boxed()
+                                                      .collect(toList())
+            return fromComponentIds(componentList)
+        }
+
+        Reactor fromComponentIds(List<Integer> componentIds) {
+            fromComponents(componentIds.collect { ReactorComponentMapper.values()[it].create() }).tap {
+                connectComponents()
             }
         }
 
-        reactor.connectComponents();
-        reactor.exploded = false
-        return reactor;
+        Reactor fromComponents(List<ReactorComponent> components) {
+            new Reactor(rows, columns).tap {
+                int k = 0;
+                for (int i = 0; i < rows; i++) {
+                    for (int j = 0; j < columns; j++) {
+                        install(components[k++], i, j)
+                    }
+                }
+            }
+        }
+
+        Reactor empty() {
+            new Reactor(rows, columns)
+        }
     }
 }

@@ -48,10 +48,6 @@ public class ReactorGenotypeEncoder {
         return phenotype;
     }
 
-    //    private static IntegerChromosome newRowChromosome(List<ReactorComponent> row) {
-    //        return IntegerChromosome.of(row.stream().map(ReactorEvolutionThread::newComponentGene).collect(toList()));
-    //    }
-
     private static IntegerGene newComponentGene(ReactorComponent component) {
         return IntegerGene.of(ReactorComponentMapper.getComponentId(component), MIN_GENE_VALUE, MAX_GENE_VALUE);
     }

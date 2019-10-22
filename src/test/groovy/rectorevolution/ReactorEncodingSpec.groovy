@@ -8,7 +8,7 @@ class ReactorEncodingSpec extends Specification {
 
     def "Gene reactor decoding/encoding"() {
         given: "a pre-built reactor"
-        Reactor reactor = Reactor.random(6, 9)
+        Reactor reactor = Reactor.builder(6, 9).random()
 
         when: "i encode the reactor"
         ReactorGenotypeEncoder encoder = new ReactorGenotypeEncoder(reactor);

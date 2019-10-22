@@ -6,10 +6,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * The entry point of the Spring Boot application.
  */
-@SpringBootApplication public class Application {
+@SpringBootApplication
+class Application {
 
-    public static void main(final String[] args) {
-        SpringApplication.run(Application.class, args);
+    static void main(final String[] args) {
+        SpringApplication.run(Application, args);
     }
 
 }

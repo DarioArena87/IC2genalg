@@ -20,7 +20,8 @@ class ReactorSimulation extends HorizontalLayout {
 
     DimensionsChooser dimensionsChooser = new DimensionsChooser().tap {
         onDimensionChange = { DimensionChangeEvent e ->
-            reactor.setDimensions(e.newRows, e.newColumns)
+            reactor = Reactor.builder(dimensionsChooser.rows, dimensionsChooser.columns).empty()
+            reactorGrid.reactor = reactor
             reactorGrid.update()
             euGenerated.value = reactor.eu
             heat.value = reactor.heat
@@ -29,7 +30,7 @@ class ReactorSimulation extends HorizontalLayout {
 
     ReactorCommands reactorCommands = new ReactorCommands().tap {
         onRandomize = {
-            reactor = Reactor.random(dimensionsChooser.rows, dimensionsChooser.columns)
+            reactor = Reactor.builder(dimensionsChooser.rows, dimensionsChooser.columns).random()
             reactorGrid.reactor = reactor
             euGenerated.value = 0
             heat.value = 0
