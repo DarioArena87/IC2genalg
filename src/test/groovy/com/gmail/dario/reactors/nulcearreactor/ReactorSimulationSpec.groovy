@@ -13,7 +13,7 @@ class ReactorSimulationSpec extends Specification {
 
     def "simulation of heat vents"() {
         given:
-        Reactor reactor = new Reactor(6, 9)
+        Reactor reactor = Reactor.builder(6, 9).empty()
         reactor.install(new QuadUraniumCell(), 0, 0)
         reactor.install(new QuadUraniumCell(), 0, 1)
         reactor.install(new QuadUraniumCell(), 0, 2)
@@ -33,7 +33,7 @@ class ReactorSimulationSpec extends Specification {
 
     def "simulation of coolant cells"() {
         given:
-        Reactor reactor = new Reactor(6, 9)
+        Reactor reactor = Reactor.builder(6, 9).empty()
         reactor.install(new QuadUraniumCell(), 0, 0)
         reactor.install(new QuadUraniumCell(), 0, 1)
         reactor.install(new QuadUraniumCell(), 0, 2)

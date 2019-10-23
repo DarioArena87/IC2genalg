@@ -12,6 +12,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.textfield.NumberField
 
+import static java.util.stream.Collectors.toList
+
 class ReactorSimulation extends HorizontalLayout {
 
     ReactorSimulationThread reactorSimulationThread
@@ -22,7 +24,6 @@ class ReactorSimulation extends HorizontalLayout {
         onDimensionChange = { DimensionChangeEvent e ->
             reactor = Reactor.builder(dimensionsChooser.rows, dimensionsChooser.columns).empty()
             reactorGrid.reactor = reactor
-            reactorGrid.update()
             euGenerated.value = reactor.eu
             heat.value = reactor.heat
         }
@@ -30,11 +31,8 @@ class ReactorSimulation extends HorizontalLayout {
 
     ReactorCommands reactorCommands = new ReactorCommands().tap {
         onRandomize = {
-            reactor = Reactor.builder(dimensionsChooser.rows, dimensionsChooser.columns).random()
-            reactorGrid.reactor = reactor
-            euGenerated.value = 0
-            heat.value = 0
-            reactorGrid.update()
+            componentList = nRandomComponentIds(dimensionsChooser.rows * dimensionsChooser.columns)
+            initializeSimulation()
         }
 
         onSimulate = { StartSimulationEvent e ->
@@ -43,10 +41,11 @@ class ReactorSimulation extends HorizontalLayout {
         }
 
         onStopSimulation = {
-            if (reactorSimulationThread) {
-                reactorSimulationThread.terminate = true
-            }
-            reactorSimulationThread = null;
+            reactorSimulationThread?.terminate = true
+        }
+
+        onRewind = {
+            initializeSimulation()
         }
 
         onStartEvolution = { StartEvolutionEvent e ->
@@ -59,24 +58,35 @@ class ReactorSimulation extends HorizontalLayout {
 
     NumberField heat = new NumberField(label: "Heat", value: 0)
 
-    Reactor reactor = new Reactor(dimensionsChooser.rows, dimensionsChooser.columns)
+    List<Integer> componentList = []
 
-    ReactorGrid reactorGrid = new ReactorGrid(reactor: reactor);
+    Reactor reactor = Reactor.builder(dimensionsChooser.rows, dimensionsChooser.columns).empty()
+
+    ReactorGrid reactorGrid = new ReactorGrid(reactor: reactor)
 
     ReactorSimulation() {
-
         add (
-            new Div(new H2("Reactor components"), new ReactorComponentsAccordion())
-        )
+            new Div(
+                new H2("Reactor components"),
+                new ReactorComponentsAccordion()
+            ),
 
-        add (
             new VerticalLayout(
                 dimensionsChooser,
                 new HorizontalLayout(reactorGrid, reactorCommands),
                 new HorizontalLayout(euGenerated, heat)
             )
         )
-
     }
 
+    private void initializeSimulation() {
+        reactor = Reactor.builder(dimensionsChooser.rows, dimensionsChooser.columns).fromComponentIds(componentList)
+        reactorGrid.reactor = reactor
+        euGenerated.value = 0
+        heat.value = 0
+    }
+
+    private List<Integer> nRandomComponentIds(int number) {
+        new Random().ints(number, 0, ReactorComponentMapper.values().length).boxed().collect(toList())
+    }
 }

@@ -10,7 +10,7 @@ class ReactorInitializationSpec extends Specification {
     
     
     def "Reactor can be initialized empty"(){
-        Reactor reactor = new Reactor()
+        Reactor reactor = Reactor.builder().empty()
         
         expect:
         reactor.rows == 0
@@ -20,7 +20,7 @@ class ReactorInitializationSpec extends Specification {
     
     def "I can set rows and columns of reactor"(){
         given:
-        Reactor reactor = new Reactor(6, 9)
+        Reactor reactor = Reactor.builder(6, 9).empty()
         
         expect:
         reactor.rows == 6
@@ -32,7 +32,7 @@ class ReactorInitializationSpec extends Specification {
     
     def "adjacent components inside reactor are connected"(){
         given:
-        Reactor reactor = new Reactor(6, 9)
+        Reactor reactor = Reactor.builder(6, 9).empty()
         
         and:
         UraniumCell uraniumCell1 = new SingleUraniumCell()

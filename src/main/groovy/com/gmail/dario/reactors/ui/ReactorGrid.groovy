@@ -12,7 +12,7 @@ class ReactorGrid extends Composite<VerticalLayout> {
 
     private Reactor reactor;
 
-    void setReactor(Reactor reactor){
+    void setReactor(Reactor reactor) {
         this.reactor = reactor;
         update();
     }

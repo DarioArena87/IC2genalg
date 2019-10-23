@@ -29,7 +29,7 @@ class Reactor implements TickListener {
     int heat = 0
     int eu
 
-    Reactor(int rows = 0, int columns = 0) {
+    private Reactor(int rows = 0, int columns = 0) {
         this.eu = 0
         this.heat = 0
         this.exploded = false
@@ -38,9 +38,6 @@ class Reactor implements TickListener {
         components = new ArrayList<>(rows)
         for (int i = 0; i < rows; i++) {
             components[i] = new ArrayList<ReactorComponent>(columns)
-            for (int j = 0; j < columns; j++) {
-                components[i][j] = EMPTY_CELL
-            }
         }
     }
 
@@ -67,7 +64,7 @@ class Reactor implements TickListener {
                 }
             }
         }
-        
+
         if (explodedComponent) {
             disconnectComponents()
             connectComponents()
@@ -94,7 +91,7 @@ class Reactor implements TickListener {
                 def surroundingComponents = [components[i + 1][j], components[i][j + 1]].findAll { !it.is(EMPTY_CELL) }
                 if (!surroundingComponents.empty) {
                     component.connectedComponents += surroundingComponents
-                    surroundingComponents.each {it.connectedComponents += component }
+                    surroundingComponents.each { it.connectedComponents += component }
                 }
             }
         }
@@ -104,7 +101,7 @@ class Reactor implements TickListener {
 
     private int getPlatingsHeatResistance() {
         def heatResistances = from(components.flatten()).filter(Plating)*.heatResistance
-        if(!heatResistances) {
+        if (!heatResistances) {
             0
         }
         else {
@@ -130,7 +127,7 @@ class Reactor implements TickListener {
         1 - heatPercentage
     }
 
-    static Builder builder(int rows, int columns) {
+    static Builder builder(int rows = 0, int columns = 0) {
         new Builder(rows, columns)
     }
 
@@ -138,7 +135,7 @@ class Reactor implements TickListener {
         private final int rows
         private final int columns
 
-        Builder(int rows, int columns){
+        Builder(int rows, int columns) {
             this.rows = rows
             this.columns = columns
         }
@@ -151,9 +148,7 @@ class Reactor implements TickListener {
         }
 
         Reactor fromComponentIds(List<Integer> componentIds) {
-            fromComponents(componentIds.collect { ReactorComponentMapper.values()[it].create() }).tap {
-                connectComponents()
-            }
+            fromComponents(componentIds.collect { ReactorComponentMapper.values()[it].create() })
         }
 
         Reactor fromComponents(List<ReactorComponent> components) {
@@ -164,11 +159,18 @@ class Reactor implements TickListener {
                         install(components[k++], i, j)
                     }
                 }
+                connectComponents()
             }
         }
 
         Reactor empty() {
-            new Reactor(rows, columns)
+            new Reactor(rows, columns).tap {
+                for (int i = 0; i < rows; i++) {
+                    for (int j = 0; j < columns; j++) {
+                        components[i][j] = EMPTY_CELL
+                    }
+                }
+            }
         }
     }
 }

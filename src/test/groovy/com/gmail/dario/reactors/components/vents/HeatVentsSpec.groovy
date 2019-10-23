@@ -30,7 +30,7 @@ class HeatVentsSpec extends Specification {
     
     def "Reactor heat vent spec"(){
         given:
-        Reactor reactor = new Reactor(6, 9).tap { heat = 1000 }
+        Reactor reactor = Reactor.builder(6, 9).empty().tap { heat = 1000 }
         
         and:
         Vent heatVent = new ReactorHeatVent()
@@ -50,7 +50,7 @@ class HeatVentsSpec extends Specification {
     
     def "Overclocked heat vent spec"(){
         given:
-        Reactor reactor = new Reactor(6, 9).tap { heat = 1000 }
+        Reactor reactor = Reactor.builder(6, 9).empty().tap { heat = 1000 }
         
         and:
         Vent heatVent = new OverclockedHeatVent()
@@ -70,7 +70,7 @@ class HeatVentsSpec extends Specification {
 
     def "Component heat vent spec"() {
         given:
-        Reactor reactor = new Reactor(6, 9).tap { heat = 1000 }
+        Reactor reactor = Reactor.builder(6, 9).empty().tap { heat = 1000 }
 
         and:
         ReactorComponent surroundingComponent1 = new HeatVent(heat: 10)

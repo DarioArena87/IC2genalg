@@ -38,7 +38,7 @@ public class ReactorGenotypeEncoder {
     }
 
     public Reactor decode(Genotype<IntegerGene> reactorGenotype) {
-        final Reactor phenotype = new Reactor(reactor.getRows(), reactor.getColumns());
+        final Reactor phenotype = Reactor.builder(reactor.getRows(), reactor.getColumns()).empty();
 
         final Chromosome<IntegerGene> chromosome = reactorGenotype.getChromosome();
         for (int row = 0; row < reactor.getRows(); row++) {

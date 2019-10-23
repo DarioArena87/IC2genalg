@@ -8,7 +8,7 @@ class UraniumCellsSpec extends Specification {
     
     def "Single uranium cell spec" () {
         given:
-        Reactor reactor = new Reactor(6, 9)
+        Reactor reactor = Reactor.builder(6, 9).empty()
         
         and:
         UraniumCell uraniumCell = new SingleUraniumCell()
@@ -27,7 +27,7 @@ class UraniumCellsSpec extends Specification {
     
     def "Adjacent uranium cells spec" () {
         given:
-        Reactor reactor = new Reactor(6, 9)
+        Reactor reactor = Reactor.builder(6, 9).empty()
         
         and:
         UraniumCell uraniumCell1 = new SingleUraniumCell()

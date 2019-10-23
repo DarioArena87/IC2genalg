@@ -9,7 +9,7 @@ class HeatExchangersSpec extends Specification {
 
     def "Basic Heat Exchanger spec"() {
         given:
-        Reactor reactor = new Reactor(6, 9).tap { heat = 1500 }
+        Reactor reactor = Reactor.builder(6, 9).empty().tap { heat = 1500 }
 
         and:
         ReactorComponent heatExchanger = new HeatExchanger()
@@ -27,7 +27,7 @@ class HeatExchangersSpec extends Specification {
 
     def "Mediating ability of Heat Exchanger spec"() {
         given:
-        Reactor reactor = new Reactor(6, 9).tap { heat = 1002 }
+        Reactor reactor = Reactor.builder(6, 9).empty().tap { heat = 1002 }
 
         and:
         ReactorComponent heatExchanger = new HeatExchanger(heat: 248)
