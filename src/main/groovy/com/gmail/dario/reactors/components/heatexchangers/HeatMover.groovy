@@ -1,6 +1,7 @@
 package com.gmail.dario.reactors.components.heatexchangers
 
 import com.gmail.dario.reactors.components.HeatingObject
+import com.gmail.dario.reactors.components.ReactorComponent
 import groovy.transform.CompileStatic
 
 import static com.gmail.dario.reactors.utils.Bounder.bound
@@ -8,7 +9,7 @@ import static com.gmail.dario.reactors.utils.FastMath.average
 import static com.google.common.collect.FluentIterable.from
 
 @CompileStatic
-abstract class HeatMover extends HeatingObject {
+abstract class HeatMover extends ReactorComponent implements HeatingObject {
 
     void transferHeatWithConnectedComponents(int maxTransferredHeat) {
         def heatingConnectedComponents = from(connectedComponents).filter(HeatingObject)

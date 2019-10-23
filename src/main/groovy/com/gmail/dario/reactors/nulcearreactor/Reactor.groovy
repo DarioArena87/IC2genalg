@@ -1,6 +1,7 @@
 package com.gmail.dario.reactors.nulcearreactor
 
 import com.gmail.dario.reactors.components.EmptyCell
+import com.gmail.dario.reactors.components.HeatingObject
 import com.gmail.dario.reactors.components.ReactorComponent
 import com.gmail.dario.reactors.components.TickListener
 import com.gmail.dario.reactors.components.platings.Plating
@@ -15,7 +16,7 @@ import static com.google.common.collect.FluentIterable.from
 import static java.util.stream.Collectors.toList
 
 @CompileStatic
-class Reactor implements TickListener {
+class Reactor implements HeatingObject, TickListener {
 
     private static final EmptyCell EMPTY_CELL = new EmptyCell()
 
@@ -26,7 +27,6 @@ class Reactor implements TickListener {
 
     List<List<ReactorComponent>> components
 
-    int heat = 0
     int eu
 
     private Reactor(int rows = 0, int columns = 0) {
@@ -107,24 +107,6 @@ class Reactor implements TickListener {
         else {
             heatResistances.sum() as int
         }
-    }
-
-    int removeHeat(int heatToGet) {
-        int drawnHeat = bound heatToGet toAtMost heat
-        heat -= drawnHeat
-        return drawnHeat
-    }
-
-    void putHeat(int heatToPut) {
-        heat += heatToPut
-    }
-
-    double getHeatPercentage() {
-        heat / maxHeat
-    }
-
-    double getDurabilityLeft() {
-        1 - heatPercentage
     }
 
     static Builder builder(int rows = 0, int columns = 0) {
