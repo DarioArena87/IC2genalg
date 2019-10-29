@@ -1,8 +1,8 @@
-package com.gmail.dario.reactors.ui;
+package com.gmail.dario.reactors.ui
 
-import com.vaadin.flow.component.Text;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.Text
+import com.vaadin.flow.component.html.Image
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 
 class ReactorComponentLabel extends HorizontalLayout {
 

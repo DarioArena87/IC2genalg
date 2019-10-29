@@ -11,7 +11,7 @@ class ReactorEncodingSpec extends Specification {
         Reactor reactor = Reactor.builder(6, 9).random()
 
         when: "i encode the reactor"
-        ReactorGenotypeEncoder encoder = new ReactorGenotypeEncoder(reactor);
+        ReactorGenotypeEncoder encoder = new ReactorGenotypeEncoder(reactor)
         def genotype = encoder.encode()
         and: "i decode the reactor"
         Reactor newReactor = encoder.decode(genotype)

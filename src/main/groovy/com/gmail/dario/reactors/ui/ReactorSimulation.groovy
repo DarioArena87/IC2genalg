@@ -86,7 +86,7 @@ class ReactorSimulation extends HorizontalLayout {
         heat.value = 0
     }
 
-    private List<Integer> nRandomComponentIds(int number) {
+    private static List<Integer> nRandomComponentIds(int number) {
         new Random().ints(number, 0, ReactorComponentMapper.values().length).boxed().collect(toList())
     }
 }

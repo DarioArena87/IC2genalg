@@ -10,8 +10,8 @@ import io.jenetics.IntegerGene;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Stream;
 
+import static com.gmail.dario.reactors.nulcearreactor.Reactor.builder;
 import static java.util.stream.Collectors.toList;
 
 public class ReactorGenotypeEncoder {
@@ -29,16 +29,16 @@ public class ReactorGenotypeEncoder {
         return Genotype.of(IntegerChromosome.of(getIntegerGenes()));
     }
 
-    private List<IntegerGene> getIntegerGenes() {
-        return getComponentStream().map(ReactorGenotypeEncoder::newComponentGene).collect(toList());
-    }
-
-    private Stream<ReactorComponent> getComponentStream() {
-        return reactor.getComponents().stream().flatMap(Collection::stream);
+    private Iterable<IntegerGene> getIntegerGenes() {
+        return reactor.getComponents()
+                      .stream()
+                      .flatMap(Collection::stream)
+                      .map(ReactorGenotypeEncoder::newComponentGene)
+                      .collect(toList());
     }
 
     public Reactor decode(Genotype<IntegerGene> reactorGenotype) {
-        final Reactor phenotype = Reactor.builder(reactor.getRows(), reactor.getColumns()).empty();
+        final Reactor phenotype = builder(reactor.getRows(), reactor.getColumns()).empty();
 
         final Chromosome<IntegerGene> chromosome = reactorGenotype.getChromosome();
         for (int row = 0; row < reactor.getRows(); row++) {

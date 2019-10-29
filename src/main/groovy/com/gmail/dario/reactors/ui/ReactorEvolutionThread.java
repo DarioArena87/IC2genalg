@@ -54,9 +54,7 @@ public class ReactorEvolutionThread extends Thread {
                                                    .limit(100)
                                                    .collect(EvolutionResult.toBestGenotype());
 
-        ui.access(() -> {
-            reactorSimulation.getReactorGrid().setReactor(reactorEncoder.decode(bestGenotype));
-        });
+        ui.access(() -> reactorSimulation.getReactorGrid().setReactor(reactorEncoder.decode(bestGenotype)));
 
     }
 

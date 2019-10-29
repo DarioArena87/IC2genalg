@@ -135,7 +135,7 @@ class Reactor implements HeatingObject, TickListener {
 
         Reactor fromComponents(List<ReactorComponent> components) {
             new Reactor(rows, columns).tap {
-                int k = 0;
+                int k = 0
                 for (int i = 0; i < rows; i++) {
                     for (int j = 0; j < columns; j++) {
                         install(components[k++], i, j)
