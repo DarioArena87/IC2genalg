@@ -23,7 +23,14 @@ class ReactorGrid extends Composite<VerticalLayout> {
             final HorizontalLayout row = new HorizontalLayout()
             for (int j = 0; j < reactor.columns; j++) {
                 def component = reactor.components[i][j]
-                row.add(new ReactorCell(i, j, ReactorComponentMapper.getComponentId(component), component.durabilityLeft))
+                ReactorCell reactorCell = new ReactorCell(i, j, ReactorComponentMapper.getComponentId(component), component.durabilityLeft)
+                reactorCell.onComponentLabelDropped = { InstallComponentEvent e ->
+                    reactor.install(ReactorComponentMapper.getAt(e.componentId).create(), e.row, e.column)
+                    reactor.disconnectComponents()
+                    reactor.connectComponents()
+                    update()
+                }
+                row.add(reactorCell)
             }
 
             content.add(row)

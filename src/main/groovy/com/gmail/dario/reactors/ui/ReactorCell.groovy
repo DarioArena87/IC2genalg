@@ -1,5 +1,11 @@
 package com.gmail.dario.reactors.ui
 
+import com.gmail.dario.reactors.components.ReactorComponent
+import com.vaadin.flow.component.Component
+import com.vaadin.flow.component.ComponentEventListener
+import com.vaadin.flow.shared.Registration
+import org.vaadin.stefan.dnd.drop.DropTargetExtension
+
 import static com.gmail.dario.reactors.ui.ReactorComponentMapper.EMPTY_CELL
 
 import com.vaadin.flow.component.Composite
@@ -37,5 +43,16 @@ class ReactorCell extends Composite<Div> {
                 add new DurabilityBar(durabilityLeft)
             }
         }
+
+        DropTargetExtension.extend(content).addDropListener { event ->
+            event.dragSource.ifPresent { source ->
+                ReactorComponentLabel component = source.component as ReactorComponentLabel
+                fireEvent(new InstallComponentEvent(this, component.componentId, row, column))
+            }
+        }
+    }
+
+    Registration setOnComponentLabelDropped(ComponentEventListener<InstallComponentEvent> e){
+        addListener(InstallComponentEvent, e)
     }
 }
