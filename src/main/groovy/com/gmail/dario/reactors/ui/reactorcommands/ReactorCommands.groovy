@@ -1,6 +1,7 @@
 package com.gmail.dario.reactors.ui.reactorcommands
 
 import com.gmail.dario.reactors.ui.reactorcommands.events.RandomizeEvent
+import com.gmail.dario.reactors.ui.reactorcommands.events.RewindEvent
 import com.gmail.dario.reactors.ui.reactorcommands.events.StartEvolutionEvent
 import com.gmail.dario.reactors.ui.reactorcommands.events.StartSimulationEvent
 import com.gmail.dario.reactors.ui.reactorcommands.events.StopSimulationEvent
@@ -29,9 +30,11 @@ class ReactorCommands extends Composite<VerticalLayout> {
 
     final Button evolve = new Button("Evolve", { fireEvent(new StartEvolutionEvent(this, ticks.value.intValue())) })
 
+    final Button rewind = new Button(new Icon(VaadinIcon.FAST_BACKWARD), { fireEvent(new RewindEvent(this)) })
+
     ReactorCommands() {
         def simulationControls = new HorizontalLayout().tap {
-            addAndExpand simulate, ticks, stopSimulation
+            addAndExpand rewind, simulate, ticks, stopSimulation
             alignItems = FlexComponent.Alignment.BASELINE
         }
 
@@ -43,19 +46,22 @@ class ReactorCommands extends Composite<VerticalLayout> {
     }
 
     Registration setOnRandomize(ComponentEventListener<RandomizeEvent> e) {
-        return addListener(RandomizeEvent, e)
+        addListener(RandomizeEvent, e)
     }
 
     Registration setOnSimulate(ComponentEventListener<StartSimulationEvent> e) {
-        return addListener(StartSimulationEvent, e)
+        addListener(StartSimulationEvent, e)
     }
 
     Registration setOnStopSimulation(ComponentEventListener<StopSimulationEvent> e) {
-        return addListener(StopSimulationEvent, e)
+        addListener(StopSimulationEvent, e)
     }
 
     Registration setOnStartEvolution(ComponentEventListener<StartEvolutionEvent> e) {
-        return addListener(StartEvolutionEvent, e)
+        addListener(StartEvolutionEvent, e)
     }
 
+    Registration setOnRewind(ComponentEventListener<RewindEvent> e) {
+        addListener(RewindEvent, e)
+    }
 }

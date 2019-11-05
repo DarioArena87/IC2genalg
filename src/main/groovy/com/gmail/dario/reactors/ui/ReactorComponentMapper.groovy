@@ -76,7 +76,7 @@ enum ReactorComponentMapper {
         values().find {reactorComponent in it.clazz}?.id ?: 0
     }
     
-    static ReactorComponentMapper getAt(int componentId) {
+    static ReactorComponentMapper fromComponentId(int componentId) {
         values().find { it.id == componentId } ?: EMPTY_CELL
     }
 

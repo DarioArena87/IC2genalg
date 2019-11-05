@@ -20,8 +20,8 @@ class ReactorSimulationThread extends Thread {
 
     @Override
     void run() {
-        for (int i = 0; i < ticks && !terminate; i++) {
-            reactor.tick();
+        for (int i = 0; i < ticks && !terminate && !reactor.exploded; i++) {
+            reactor.tick()
             if (i % UPDATE_INTERVAL == 0) {
                 updateUi()
             }

@@ -10,6 +10,7 @@ import io.jenetics.IntegerGene;
 
 import java.util.Collection;
 
+import static com.gmail.dario.reactors.nulcearreactor.Reactor.builder;
 import static java.util.stream.Collectors.toList;
 
 public class ReactorGenotypeEncoder {
@@ -24,33 +25,33 @@ public class ReactorGenotypeEncoder {
     }
 
     public Genotype<IntegerGene> encode() {
-        return Genotype.of(
-            IntegerChromosome.of(
-                reactor.getComponents()
-                       .stream()
-                       .flatMap(Collection::stream)
-                       .map(ReactorGenotypeEncoder::newComponentGene)
-                       .collect(toList())
-            )
-        );
+        return Genotype.of(IntegerChromosome.of(getIntegerGenes()));
+    }
+
+    private Iterable<IntegerGene> getIntegerGenes() {
+        return reactor.getComponents()
+                      .stream()
+                      .flatMap(Collection::stream)
+                      .map(ReactorGenotypeEncoder::newComponentGene)
+                      .collect(toList());
     }
 
     public Reactor decode(Genotype<IntegerGene> reactorGenotype) {
-        final Reactor phenotype = new Reactor(reactor.getRows(), reactor.getColumns());
+        final Reactor phenotype = builder(reactor.getRows(), reactor.getColumns()).empty();
 
         final Chromosome<IntegerGene> chromosome = reactorGenotype.getChromosome();
         for (int row = 0; row < reactor.getRows(); row++) {
             for (int column = 0; column < reactor.getColumns(); column++) {
-                IntegerGene gene = chromosome.getGene(reactor.getColumns() * row + column);
-                phenotype.install(ReactorComponentMapper.getAt(gene.getAllele()).create(), row, column);
+                phenotype.install(getReactorComponent(chromosome, row, column), row, column);
             }
         }
         return phenotype;
     }
 
-    //    private static IntegerChromosome newRowChromosome(List<ReactorComponent> row) {
-    //        return IntegerChromosome.of(row.stream().map(ReactorEvolutionThread::newComponentGene).collect(toList()));
-    //    }
+    private ReactorComponent getReactorComponent(Chromosome<IntegerGene> chromosome, int row, int column) {
+        IntegerGene gene = chromosome.getGene(reactor.getColumns() * row + column);
+        return ReactorComponentMapper.fromComponentId(gene.getAllele()).create();
+    }
 
     private static IntegerGene newComponentGene(ReactorComponent component) {
         return IntegerGene.of(ReactorComponentMapper.getComponentId(component), MIN_GENE_VALUE, MAX_GENE_VALUE);

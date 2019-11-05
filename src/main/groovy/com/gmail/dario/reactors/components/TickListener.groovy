@@ -1,5 +1,5 @@
 package com.gmail.dario.reactors.components
 
-interface TickListener {
-    void tick()
+trait TickListener {
+    abstract void tick()
 }

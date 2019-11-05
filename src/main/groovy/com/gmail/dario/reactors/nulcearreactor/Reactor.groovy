@@ -1,18 +1,23 @@
 package com.gmail.dario.reactors.nulcearreactor
 
 import com.gmail.dario.reactors.components.EmptyCell
+import com.gmail.dario.reactors.components.HeatingObject
 import com.gmail.dario.reactors.components.ReactorComponent
 import com.gmail.dario.reactors.components.TickListener
 import com.gmail.dario.reactors.components.platings.Plating
 import com.gmail.dario.reactors.ui.ReactorComponentMapper
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
+import sun.tools.jar.CommandLine
+
+import java.util.stream.Stream
 
 import static com.gmail.dario.reactors.utils.Bounder.bound
 import static com.google.common.collect.FluentIterable.from
 import static java.util.stream.Collectors.toList
 
 @CompileStatic
-class Reactor implements TickListener {
+class Reactor implements HeatingObject, TickListener {
 
     private static final EmptyCell EMPTY_CELL = new EmptyCell()
 
@@ -23,28 +28,20 @@ class Reactor implements TickListener {
 
     List<List<ReactorComponent>> components
 
-    int heat = 0
     int eu
 
-    Reactor(int rows = 0, int columns = 0) {
-        setDimensions(rows, columns)
-    }
-
-    void setDimensions(int rows, int columns) {
+    private Reactor(int rows = 0, int columns = 0) {
         this.eu = 0
         this.heat = 0
-
         this.exploded = false
         this.rows = rows
         this.columns = columns
         components = new ArrayList<>(rows)
         for (int i = 0; i < rows; i++) {
             components[i] = new ArrayList<ReactorComponent>(columns)
-            for (int j = 0; j < columns; j++) {
-                components[i][j] = EMPTY_CELL
-            }
         }
     }
+
 
     void install(ReactorComponent component, int row, int column) {
         components[row][column] = component
@@ -68,7 +65,7 @@ class Reactor implements TickListener {
                 }
             }
         }
-        
+
         if (explodedComponent) {
             disconnectComponents()
             connectComponents()
@@ -95,7 +92,7 @@ class Reactor implements TickListener {
                 def surroundingComponents = [components[i + 1][j], components[i][j + 1]].findAll { !it.is(EMPTY_CELL) }
                 if (!surroundingComponents.empty) {
                     component.connectedComponents += surroundingComponents
-                    surroundingComponents.each {it.connectedComponents += component }
+                    surroundingComponents.each { it.connectedComponents += component }
                 }
             }
         }
@@ -105,7 +102,7 @@ class Reactor implements TickListener {
 
     private int getPlatingsHeatResistance() {
         def heatResistances = from(components.flatten()).filter(Plating)*.heatResistance
-        if(!heatResistances) {
+        if (!heatResistances) {
             0
         }
         else {
@@ -113,41 +110,54 @@ class Reactor implements TickListener {
         }
     }
 
-    int removeHeat(int heatToGet) {
-        int drawnHeat = bound heatToGet toAtMost heat
-        heat -= drawnHeat
-        return drawnHeat
+    static Builder builder(int rows = 0, int columns = 0) {
+        new Builder(rows, columns)
     }
 
-    void putHeat(int heatToPut) {
-        heat += heatToPut
-    }
+    static class Builder {
+        private final int rows
+        private final int columns
 
-    double getHeatPercentage() {
-        heat / maxHeat
-    }
+        Builder(int rows, int columns) {
+            this.rows = rows
+            this.columns = columns
+        }
 
-    double getDurabilityLeft() {
-        1 - heatPercentage
-    }
+        Reactor random() {
+            List<Integer> componentList = new Random().ints(rows * columns, 0, ReactorComponentMapper.values().length)
+                                                      .boxed()
+                                                      .collect(toList())
+            fromComponentIds(componentList)
+        }
 
-    static Reactor random(int rows, int columns){
-        def reactor = new Reactor(rows, columns)
-        List<ReactorComponent> randomComponents = new Random().ints(rows * columns, 0, ReactorComponentMapper.values().length)
-                                                              .boxed()
-                                                              .map { ReactorComponentMapper.values()[it] }
-                                                              .map { it.create() }
-                                                              .collect(toList())
+        @CompileDynamic
+        Reactor fromComponentIds(List<Integer> componentIds) {
+            def components = (0..<rows * columns).collect { componentIds[it] }
+                                                 .collect(ReactorComponentMapper.&fromComponentId)
+                                                 .collect { it.create() }
+            fromComponents(components)
+        }
 
-        int k = 0;
-        for (int i = 0; i < reactor.rows; i++) {
-            for (int j = 0; j < reactor.columns; j++) {
-                reactor.install(randomComponents[k++], i, j)
+        Reactor fromComponents(List<ReactorComponent> components) {
+            new Reactor(rows, columns).tap {
+                int k = 0
+                for (int i = 0; i < rows; i++) {
+                    for (int j = 0; j < columns; j++) {
+                        install(components[k++], i, j)
+                    }
+                }
+                connectComponents()
             }
         }
 
-        reactor.connectComponents();
-        reactor.exploded = false
-        return reactor;
+        Reactor empty() {
+            new Reactor(rows, columns).tap {
+                for (int i = 0; i < rows; i++) {
+                    for (int j = 0; j < columns; j++) {
+                        components[i][j] = EMPTY_CELL
+                    }
+                }
+            }
+        }
     }
 }

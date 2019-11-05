@@ -1,12 +1,13 @@
 package com.gmail.dario.reactors.components.vents
 
 import com.gmail.dario.reactors.components.HeatingObject
+import com.gmail.dario.reactors.components.ReactorComponent
 import groovy.transform.CompileStatic
 
 import static com.gmail.dario.reactors.utils.Bounder.bound
 
 @CompileStatic
-abstract class Vent extends HeatingObject {
+abstract class Vent extends ReactorComponent implements HeatingObject {
 
     final int maxHeat = 1000
 

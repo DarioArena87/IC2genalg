@@ -5,9 +5,13 @@ import com.vaadin.flow.component.ComponentEventListener
 import com.vaadin.flow.component.Composite
 import com.vaadin.flow.component.Text
 import com.vaadin.flow.component.button.Button
+import com.vaadin.flow.component.html.Input
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.textfield.NumberField
+import com.vaadin.flow.data.value.ValueChangeMode
 import com.vaadin.flow.shared.Registration
+
+import static com.vaadin.flow.data.value.ValueChangeMode.TIMEOUT
 
 class DimensionsChooser extends Composite<HorizontalLayout> {
 
@@ -17,11 +21,33 @@ class DimensionsChooser extends Composite<HorizontalLayout> {
 
     DimensionsChooser() {
         content.add(
-                new Text("Size"),
-                new NumberField(hasControls: true, step: 1.0, value: rows).tap { addValueChangeListener { rows = it.value } },
-                new Text("x"),
-                new NumberField(hasControls: true, step: 1.0, value: columns).tap { addValueChangeListener { columns = it.value } },
-                new Button("Create New", { fireEvent(new DimensionChangeEvent(this, false, rows, columns)) })
+            new Text("Size"),
+            new NumberField().tap {
+                hasControls = true
+                pattern = "[0-9]*"
+                step = 1.0
+                value = rows
+                addValueChangeListener {
+                    rows = it.value
+                    fireEvent(new DimensionChangeEvent(this))
+                }
+                valueChangeMode = TIMEOUT
+                valueChangeTimeout = 250
+            },
+            new Text("x"),
+            new NumberField().tap {
+                hasControls = true
+                pattern = "[0-9]*"
+                step = 1.0
+                value = columns
+                addValueChangeListener {
+                    columns = it.value
+                    fireEvent(new DimensionChangeEvent(this))
+                }
+                valueChangeMode = TIMEOUT
+                valueChangeTimeout = 250
+            },
+            new Button("Create New", { fireEvent(new DimensionChangeEvent(this)) })
         )
     }
 

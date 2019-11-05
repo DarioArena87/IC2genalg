@@ -36,8 +36,8 @@ abstract class UraniumCell extends ReactorComponent {
 
     int getConnectedRods() {
         FluentIterable<UraniumCell> connectedUraniumCells = from(connectedComponents).filter(UraniumCell)
-        if (!connectedUraniumCells.isEmpty()) {
-            connectedUraniumCells.transform { it.numberOfRods }.sum() as int
+        if (!connectedUraniumCells.empty) {
+            connectedUraniumCells*.numberOfRods.sum() as int
         }
         else {
             0
