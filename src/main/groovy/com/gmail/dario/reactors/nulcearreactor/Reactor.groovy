@@ -6,6 +6,7 @@ import com.gmail.dario.reactors.components.ReactorComponent
 import com.gmail.dario.reactors.components.TickListener
 import com.gmail.dario.reactors.components.platings.Plating
 import com.gmail.dario.reactors.ui.ReactorComponentMapper
+import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
 import sun.tools.jar.CommandLine
 
@@ -126,11 +127,15 @@ class Reactor implements HeatingObject, TickListener {
             List<Integer> componentList = new Random().ints(rows * columns, 0, ReactorComponentMapper.values().length)
                                                       .boxed()
                                                       .collect(toList())
-            return fromComponentIds(componentList)
+            fromComponentIds(componentList)
         }
 
+        @CompileDynamic
         Reactor fromComponentIds(List<Integer> componentIds) {
-            fromComponents(componentIds.collect { ReactorComponentMapper.values()[it].create() })
+            def components = (0..<rows * columns).collect { componentIds[it] }
+                                                 .collect(ReactorComponentMapper.&fromComponentId)
+                                                 .collect { it.create() }
+            fromComponents(components)
         }
 
         Reactor fromComponents(List<ReactorComponent> components) {

@@ -23,8 +23,8 @@ abstract class Reflector extends ReactorComponent {
     void tick() {
         FluentIterable<UraniumCell> connectedUraniumCells = from(connectedComponents).filter(UraniumCell)
 
-        if (!connectedUraniumCells.isEmpty()) {
-            numberOfPulses += connectedUraniumCells.transform { it.numberOfRods }.sum() as int
+        if (!connectedUraniumCells.empty) {
+            numberOfPulses += connectedUraniumCells*.numberOfRods.sum() as int
         }
     }
 }

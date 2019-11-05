@@ -26,6 +26,7 @@ class ReactorSimulation extends HorizontalLayout {
             reactorGrid.reactor = reactor
             euGenerated.value = reactor.eu
             heat.value = reactor.heat
+            componentList = [].withDefault { ReactorComponentMapper.EMPTY_CELL.id }
         }
     }
 
@@ -58,14 +59,18 @@ class ReactorSimulation extends HorizontalLayout {
 
     NumberField heat = new NumberField(label: "Heat", value: 0)
 
-    List<Integer> componentList = []
+    List<Integer> componentList = [].withDefault { ReactorComponentMapper.EMPTY_CELL.id }
 
     Reactor reactor = Reactor.builder(dimensionsChooser.rows, dimensionsChooser.columns).empty()
 
-    ReactorGrid reactorGrid = new ReactorGrid(reactor: reactor)
+    ReactorGrid reactorGrid = new ReactorGrid(reactor: reactor).tap {
+        onComponentInstalled = { InstallComponentEvent e ->
+            componentList[reactor.columns * e.row + e.column] = e.componentId
+        }
+    }
 
     ReactorSimulation() {
-        add (
+        add(
             new Div(
                 new H2("Reactor components"),
                 new ReactorComponentsAccordion()
@@ -87,6 +92,6 @@ class ReactorSimulation extends HorizontalLayout {
     }
 
     private static List<Integer> nRandomComponentIds(int number) {
-        new Random().ints(number, 0, ReactorComponentMapper.values().length).boxed().collect(toList())
+        new Random().ints(number, 0, ReactorComponentMapper.values().length).boxed().collect toList()
     }
 }

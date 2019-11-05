@@ -6,7 +6,7 @@ import spock.lang.Specification
 
 class ReactorEncodingSpec extends Specification {
 
-    def "Gene reactor decoding/encoding"() {
+    def "Gene reactor decoding and encoding"() {
         given: "a pre-built reactor"
         Reactor reactor = Reactor.builder(6, 9).random()
 

@@ -15,14 +15,14 @@ abstract class HeatMover extends ReactorComponent implements HeatingObject {
         def heatingConnectedComponents = from(connectedComponents).filter(HeatingObject)
 
         double averageDurabilityLeft = average(heatingConnectedComponents*.durabilityLeft + durabilityLeft)
-        heatingConnectedComponents.each {component ->
+        for (component in heatingConnectedComponents) {
             int heatToTransfer = (int) (component.maxHeat * (1 - averageDurabilityLeft) - component.heat)
             if (heatToTransfer < 0) {
                 heat += component.removeHeat(bound(heatToTransfer.abs()).toAtMost(maxTransferredHeat))
             }
             else {
                 int heatTransferred = bound heatToTransfer toAtMost maxTransferredHeat
-                component.putHeat(heatTransferred)
+                component.putHeat heatTransferred
                 heat -= heatTransferred
             }
         }
@@ -34,11 +34,11 @@ abstract class HeatMover extends ReactorComponent implements HeatingObject {
         int heatToTransfer = (int) (vessel.maxHeat * (1 - averageDurabilityLeft) - vessel.heat)
 
         if (heatToTransfer < 0) {
-            heat += vessel.removeHeat(bound(heatToTransfer.abs()).toAtMost(maxTransferredHeat))
+            heat += vessel.removeHeat bound(heatToTransfer.abs()).toAtMost(maxTransferredHeat)
         }
         else {
             int heatTransferred = bound heatToTransfer toAtMost maxTransferredHeat
-            vessel.putHeat(heatTransferred)
+            vessel.putHeat heatTransferred
             heat -= heatTransferred
         }
     }

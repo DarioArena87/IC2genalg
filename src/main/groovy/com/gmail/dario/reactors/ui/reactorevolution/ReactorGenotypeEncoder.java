@@ -9,7 +9,6 @@ import io.jenetics.IntegerChromosome;
 import io.jenetics.IntegerGene;
 
 import java.util.Collection;
-import java.util.List;
 
 import static com.gmail.dario.reactors.nulcearreactor.Reactor.builder;
 import static java.util.stream.Collectors.toList;
@@ -43,8 +42,7 @@ public class ReactorGenotypeEncoder {
         final Chromosome<IntegerGene> chromosome = reactorGenotype.getChromosome();
         for (int row = 0; row < reactor.getRows(); row++) {
             for (int column = 0; column < reactor.getColumns(); column++) {
-                ReactorComponent component = getReactorComponent(chromosome, row, column);
-                phenotype.install(component, row, column);
+                phenotype.install(getReactorComponent(chromosome, row, column), row, column);
             }
         }
         return phenotype;
@@ -52,7 +50,7 @@ public class ReactorGenotypeEncoder {
 
     private ReactorComponent getReactorComponent(Chromosome<IntegerGene> chromosome, int row, int column) {
         IntegerGene gene = chromosome.getGene(reactor.getColumns() * row + column);
-        return ReactorComponentMapper.getAt(gene.getAllele()).create();
+        return ReactorComponentMapper.fromComponentId(gene.getAllele()).create();
     }
 
     private static IntegerGene newComponentGene(ReactorComponent component) {

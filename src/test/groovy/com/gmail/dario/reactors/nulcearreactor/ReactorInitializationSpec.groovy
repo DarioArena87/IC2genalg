@@ -3,7 +3,7 @@ package com.gmail.dario.reactors.nulcearreactor
 import com.gmail.dario.reactors.components.fuelcells.DualUraniumCell
 import com.gmail.dario.reactors.components.fuelcells.SingleUraniumCell
 import com.gmail.dario.reactors.components.fuelcells.UraniumCell
-
+import com.gmail.dario.reactors.ui.ReactorComponentMapper
 import spock.lang.Specification
 
 class ReactorInitializationSpec extends Specification {
@@ -54,6 +54,19 @@ class ReactorInitializationSpec extends Specification {
         uraniumCell2.connectedComponents.size() == 1
         uraniumCell1 in uraniumCell2.connectedComponents
         
-        uraniumCell3.connectedComponents.isEmpty()
+        uraniumCell3.connectedComponents.empty
+    }
+
+    def "Reactor initialization with lazy list"(){
+        given:
+        def componentIds = [].withDefault { ReactorComponentMapper.EMPTY_CELL.id }
+        componentIds[22] = ReactorComponentMapper.QUAD_URANIUMCELL.id
+
+        when:
+        Reactor reactor = Reactor.builder(6, 9).fromComponentIds(componentIds)
+
+        then:
+        reactor.rows == 6
+        reactor.columns == 9
     }
 }
