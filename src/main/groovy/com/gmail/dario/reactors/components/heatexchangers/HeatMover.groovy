@@ -8,7 +8,6 @@ import static com.gmail.dario.reactors.utils.Bounder.bound
 import static com.gmail.dario.reactors.utils.FastMath.average
 import static com.google.common.collect.FluentIterable.from
 
-@CompileStatic
 abstract class HeatMover extends ReactorComponent implements HeatingObject {
 
     void transferHeatWithConnectedComponents(int maxTransferredHeat) {

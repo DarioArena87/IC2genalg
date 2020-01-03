@@ -8,6 +8,7 @@ import com.gmail.dario.reactors.ui.reactorcommands.events.StartEvolutionEvent
 import com.gmail.dario.reactors.ui.reactorcommands.events.StartSimulationEvent
 import com.vaadin.flow.component.html.Div
 import com.vaadin.flow.component.html.H2
+import com.vaadin.flow.component.html.Label
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
 import com.vaadin.flow.component.textfield.NumberField
@@ -26,6 +27,7 @@ class ReactorSimulation extends HorizontalLayout {
             reactorGrid.reactor = reactor
             euGenerated.value = reactor.eu
             heat.value = reactor.heat
+            maxHeat.value = reactor.maxHeat
             componentList = [].withDefault { ReactorComponentMapper.EMPTY_CELL.id }
         }
     }
@@ -59,6 +61,8 @@ class ReactorSimulation extends HorizontalLayout {
 
     NumberField heat = new NumberField(label: "Heat", value: 0)
 
+    NumberField maxHeat = new NumberField(label: "Max Heat", enabled: false)
+
     List<Integer> componentList = [].withDefault { ReactorComponentMapper.EMPTY_CELL.id }
 
     Reactor reactor = Reactor.builder(dimensionsChooser.rows, dimensionsChooser.columns).empty()
@@ -79,7 +83,7 @@ class ReactorSimulation extends HorizontalLayout {
             new VerticalLayout(
                 dimensionsChooser,
                 new HorizontalLayout(reactorGrid, reactorCommands),
-                new HorizontalLayout(euGenerated, heat)
+                new HorizontalLayout(euGenerated, heat, maxHeat)
             )
         )
     }
@@ -89,6 +93,7 @@ class ReactorSimulation extends HorizontalLayout {
         reactorGrid.reactor = reactor
         euGenerated.value = 0
         heat.value = 0
+        maxHeat.value = reactor.maxHeat
     }
 
     private static List<Integer> nRandomComponentIds(int number) {

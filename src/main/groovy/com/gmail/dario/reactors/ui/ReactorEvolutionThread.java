@@ -1,15 +1,16 @@
 package com.gmail.dario.reactors.ui;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.gmail.dario.reactors.nulcearreactor.Reactor;
 import com.gmail.dario.reactors.ui.reactorevolution.ReactorGenotypeEncoder;
 import com.vaadin.flow.component.UI;
+
 import io.jenetics.Genotype;
 import io.jenetics.IntegerGene;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ReactorEvolutionThread extends Thread {
 

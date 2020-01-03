@@ -45,6 +45,8 @@ public class ReactorGenotypeEncoder {
                 phenotype.install(getReactorComponent(chromosome, row, column), row, column);
             }
         }
+
+        phenotype.connectComponents();
         return phenotype;
     }
 

@@ -15,6 +15,7 @@ import com.gmail.dario.reactors.components.heatexchangers.ComponentHeatExchanger
 import com.gmail.dario.reactors.components.heatexchangers.HeatExchanger
 import com.gmail.dario.reactors.components.heatexchangers.ReactorHeatExchanger
 import com.gmail.dario.reactors.components.platings.ContainmentReactorPlating
+import com.gmail.dario.reactors.components.platings.HeatCapacityReactorPlating
 import com.gmail.dario.reactors.components.platings.ReactorPlating
 import com.gmail.dario.reactors.components.reflectors.NeutronReflector
 import com.gmail.dario.reactors.components.reflectors.ThickNeutronReflector
@@ -56,7 +57,7 @@ enum ReactorComponentMapper {
 
     REACTOR_PLATING(20, ReactorPlating, {new ReactorPlating()}, "Grid_Reactor_Plating.png", "Reactor Plating"),
     CONTAINMENT_REACTOR_PLATING(21, ContainmentReactorPlating, {new ContainmentReactorPlating()}, "Grid_Containment_Reactor_Plating.png", "Containment Reactor Plating"),
-    HEAT_CAPACITY_REACTOR_PLATING(22, ReactorPlating, {new ReactorPlating()}, "Grid_Heat-Capacity_Reactor_Plating.png", "Heat-Capacity Reactor Plating");
+    HEAT_CAPACITY_REACTOR_PLATING(22, HeatCapacityReactorPlating, {new HeatCapacityReactorPlating()}, "Grid_Heat-Capacity_Reactor_Plating.png", "Heat-Capacity Reactor Plating");
 
     final int id
     private final Class clazz
