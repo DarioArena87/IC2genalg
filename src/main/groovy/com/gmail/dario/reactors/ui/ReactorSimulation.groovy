@@ -84,7 +84,7 @@ class ReactorSimulation extends HorizontalLayout {
         )
     }
 
-    private void initializeSimulation() {
+    void initializeSimulation() {
         reactor = Reactor.builder(dimensionsChooser.rows, dimensionsChooser.columns).fromComponentIds(componentList)
         reactorGrid.reactor = reactor
         euGenerated.value = 0

@@ -8,6 +8,9 @@ import io.jenetics.IntegerGene;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class ReactorEvolutionThread extends Thread {
 
     private static final double EU_WEIGHT = 0.5;
@@ -32,16 +35,11 @@ public class ReactorEvolutionThread extends Thread {
             reactor.tick();
         }
 
-        double points;
         if (reactor.isExploded()) {
-            points = 0d;
-        }
-        else {
-            points = reactor.getEu() - reactor.getEu() * reactor.getHeatPercentage();
+            return  0d;
         }
 
-        System.out.println("Points: " + points);
-        return points;
+        return reactor.getDurabilityLeft() * reactor.getEu();
     }
 
     @Override
@@ -52,10 +50,24 @@ public class ReactorEvolutionThread extends Thread {
                                                    .build()
                                                    .stream()
                                                    .limit(100)
+                                                   .peek(er -> setUiReactor(er.getBestPhenotype().getGenotype()))
                                                    .collect(EvolutionResult.toBestGenotype());
 
-        ui.access(() -> reactorSimulation.getReactorGrid().setReactor(reactorEncoder.decode(bestGenotype)));
+        setUiReactor(bestGenotype);
 
+    }
+
+    private void setUiReactor(Genotype<IntegerGene> genotype) {
+        ui.access(() -> {
+            final Reactor reactor = reactorEncoder.decode(genotype);
+            reactorSimulation.setComponentList(reactor.getComponents()
+                                                      .stream()
+                                                      .flatMap(List::stream)
+                                                      .map(ReactorComponentMapper::getComponentId)
+                                                      .collect(Collectors.toList()));
+            reactorSimulation.initializeSimulation();
+
+        });
     }
 
 }
