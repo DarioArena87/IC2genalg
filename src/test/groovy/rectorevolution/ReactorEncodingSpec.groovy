@@ -23,8 +23,8 @@ class ReactorEncodingSpec extends Specification {
         newReactor.rows == reactor.rows
         newReactor.columns == reactor.columns
         [
-            newReactor.components.flatten().collect{it.class},
-            reactor.components.flatten().collect {it.class}
-        ].transpose().every{it[0] == it[1]}
+            newReactor.components.flatten().collect { it.class },
+            reactor.components.flatten().collect { it.class }
+        ].transpose().every { it[0] == it[1] }
     }
 }

@@ -9,8 +9,10 @@ import com.vaadin.flow.component.UI;
 
 import io.jenetics.Genotype;
 import io.jenetics.IntegerGene;
+import io.jenetics.Phenotype;
 import io.jenetics.engine.Engine;
 import io.jenetics.engine.EvolutionResult;
+import io.jenetics.stat.MinMax;
 
 public class ReactorEvolutionThread extends Thread {
 
@@ -37,7 +39,7 @@ public class ReactorEvolutionThread extends Thread {
         }
 
         if (reactor.isExploded()) {
-            return  0d;
+            return 0d;
         }
 
         return reactor.getDurabilityLeft() * reactor.getEu();
@@ -47,28 +49,16 @@ public class ReactorEvolutionThread extends Thread {
     public void run() {
         Genotype<IntegerGene> genotype = reactorEncoder.encode();
 
-        Genotype<IntegerGene> bestGenotype = Engine.builder(this::eval, genotype)
-                                                   .build()
-                                                   .stream()
-                                                   .limit(100)
-                                                   .peek(er -> setUiReactor(er.getBestPhenotype().getGenotype()))
-                                                   .collect(EvolutionResult.toBestGenotype());
-
-        setUiReactor(bestGenotype);
-
-    }
-
-    private void setUiReactor(Genotype<IntegerGene> genotype) {
-        ui.access(() -> {
-            final Reactor reactor = reactorEncoder.decode(genotype);
-            reactorSimulation.setComponentList(reactor.getComponents()
-                                                      .stream()
-                                                      .flatMap(List::stream)
-                                                      .map(ReactorComponentMapper::getComponentId)
-                                                      .collect(Collectors.toList()));
-            reactorSimulation.initializeSimulation();
-
-        });
+        Engine.builder(this::eval, genotype)
+              .build()
+              .stream()
+              .limit(100)
+              .peek(MinMax.of())
+              .map(EvolutionResult::bestPhenotype)
+              .map(Phenotype::genotype)
+              .forEach(result -> {
+                  ui.access(() -> reactorSimulation.getReactorGrid().setReactor(reactorEncoder.decode(result)));
+              });
     }
 
 }
