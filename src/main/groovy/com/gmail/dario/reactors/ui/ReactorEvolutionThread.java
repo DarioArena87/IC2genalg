@@ -42,7 +42,10 @@ public class ReactorEvolutionThread extends Thread {
             return 0d;
         }
 
-        return reactor.getDurabilityLeft() * reactor.getEu();
+        double points = reactor.getDurabilityLeft() * reactor.getEu();
+
+        System.out.println(points);
+        return points;
     }
 
     @Override

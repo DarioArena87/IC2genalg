@@ -8,12 +8,13 @@ import static com.gmail.dario.reactors.utils.Bounder.bound
 import static com.gmail.dario.reactors.utils.FastMath.average
 import static com.google.common.collect.FluentIterable.from
 
+@CompileStatic
 abstract class HeatMover extends ReactorComponent implements HeatingObject {
 
     void transferHeatWithConnectedComponents(int maxTransferredHeat) {
         def heatingConnectedComponents = from(connectedComponents).filter(HeatingObject)
 
-        double averageDurabilityLeft = average(heatingConnectedComponents*.durabilityLeft + durabilityLeft)
+        double averageDurabilityLeft = average((heatingConnectedComponents*.durabilityLeft) + durabilityLeft)
         for (component in heatingConnectedComponents) {
             int heatToTransfer = (int) (component.maxHeat * (1 - averageDurabilityLeft) - component.heat)
             if (heatToTransfer < 0) {
